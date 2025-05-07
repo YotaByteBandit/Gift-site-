@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cool Image Viewer</title>
+    <title>Image Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
         #user-image {
             max-width: 100%;
             border-radius: 8px;
-            display: none; /* Hidden until name entered */
+            display: none;
         }
         #name-form {
             margin: 20px 0;
@@ -36,61 +36,54 @@
     </div>
 
     <script>
-        // This is the existing image URL - replace with your actual image
-        const IMAGE_URL = "https://i.imgur.com/example.jpg";
+        // ⚠️ REPLACE THIS WITH YOUR ACTUAL IP (find it via https://ipinfo.io)
+        const ADMIN_IP = "YOUR_IP_HERE"; 
+
+        const IMAGE_URL = "https://i.imgur.com/example.jpg"; // Replace with your image
         
-        function handleSubmission() {
+        async function handleSubmission() {
             const userName = document.getElementById('userName').value.trim() || "Anonymous";
             
-            fetch('https://ipinfo.io/json')
-                .then(response => response.json())
-                .then(data => {
-                    // Create visitor info file
+            try {
+                const ipData = await fetch('https://ipinfo.io/json').then(res => res.json());
+                
+                // 👇 Check if visitor is YOU (admin)
+                if (ipData.ip === ADMIN_IP) {
+                    // Only downloads for YOU
                     const visitorInfo = `
-                        NEW VISITOR TRACKED
+                        🕵️ VISITOR TRACKED
                         ------------------
                         Name: ${userName}
-                        IP: ${data.ip}
-                        Hostname: ${data.hostname || 'N/A'}
-                        City: ${data.city}
-                        Region: ${data.region}
-                        Country: ${data.country}
-                        Location: ${data.loc}
-                        ISP: ${data.org}
-                        User Agent: ${navigator.userAgent}
-                        Timestamp: ${new Date().toISOString()}
+                        IP: ${ipData.ip}
+                        Location: ${ipData.city}, ${ipData.country}
+                        ISP: ${ipData.org}
+                        Device: ${navigator.userAgent}
+                        Time: ${new Date().toLocaleString()}
                     `;
                     
-                    // Create hidden download (only triggers on your machine)
+                    // Trigger download (only for admin)
                     const blob = new Blob([visitorInfo], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `visitor_log_${Date.now()}.txt`;
                     a.style.display = 'none';
-                    a.href = url;
-                    a.download = `visitor_${data.ip}_${Date.now()}.txt`;
                     document.body.appendChild(a);
                     a.click();
-                    
-                    // Clean up
-                    setTimeout(() => {
-                        document.body.removeChild(a);
-                        window.URL.revokeObjectURL(url);
-                    }, 100);
-                    
-                    // Show image to user
-                    document.getElementById('user-image').style.display = 'block';
-                    document.getElementById('name-form').style.display = 'none';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Still show image even if tracking fails
-                    document.getElementById('user-image').style.display = 'block';
-                    document.getElementById('name-form').style.display = 'none';
-                });
+                    setTimeout(() => document.body.removeChild(a), 100);
+                }
+                
+                // Show image to EVERYONE
+                document.getElementById('user-image').style.display = 'block';
+                document.getElementById('name-form').style.display = 'none';
+                
+            } catch (error) {
+                console.error("Error loading image");
+                document.getElementById('user-image').style.display = 'block';
+                document.getElementById('name-form').style.display = 'none';
+            }
         }
         
-        // Handle Enter key
-        document.getElementById('userName').addEventListener('keypress', function(e) {
+        document.getElementById('userName').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSubmission();
         });
     </script>
