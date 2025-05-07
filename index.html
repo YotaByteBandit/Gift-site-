@@ -1,39 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IP Fetcher</title>
+    <title>IP Display</title>
+    <style>
+        .ip-container {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .ip-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        .link {
+            display: block;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #0066cc;
+        }
+    </style>
 </head>
 <body>
+    <div class="ip-container">
+        <h2>Visitor Information</h2>
+        <div class="ip-info" id="ipData">Loading your information...</div>
+        <a href="https://midly.in/tLuPAf" class="link" target="_blank">Check out: https://midly.in/tLuPAf</a>
+    </div>
 
-  <h1>Welcome to my IP fetcher page</h1>
-  <p>Click the button to get your IP:</p>
-
-  <button onclick="getIP()">Get IP</button>
-
-  <div id="ip-info"></div>
-
-  <script>
-    function getIP() {
-      fetch("https://ipinfo.io/json?token=demo") // Remplace "demo" par ton token si tu en as un
-        .then(response => response.json())
-        .then(data => {
-          const ipInfo = `
-            <p>IP Address: ${data.ip}</p>
-            <p>City: ${data.city}</p>
-            <p>Region: ${data.region}</p>
-            <p>Country: ${data.country}</p>
-            <p>ISP: ${data.org}</p>
-          `;
-          document.getElementById('ip-info').innerHTML = ipInfo;
-        })
-        .catch(error => {
-          document.getElementById('ip-info').innerHTML = "Error fetching IP.";
-          console.error(error);
-        });
-    }
-  </script>
-
+    <script>
+        fetch('https://ipinfo.io/json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ipData').innerHTML = `
+                    <p><strong>IP Address:</strong> ${data.ip}</p>
+                    <p><strong>Location:</strong> ${data.city}, ${data.region}, ${data.country}</p>
+                    <p><strong>ISP:</strong> ${data.org.split(' ').slice(1).join(' ')}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('ipData').innerHTML = 
+                    "Couldn't load IP information. Please check your connection.";
+                console.error('Error:', error);
+            });
+    </script>
 </body>
 </html>
