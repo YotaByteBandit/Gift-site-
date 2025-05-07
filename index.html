@@ -1,9 +1,39 @@
-fetch("https://ip-api.com/json/")
-  .then(response => response.json())
-  .then(data => {
-    console.log("IP Address:", data.query);
-    console.log("City:", data.city);
-    console.log("Country:", data.country);
-    console.log("ISP:", data.isp);
-  })
-  .catch(error => console.log("Error:", error));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Fetcher</title>
+</head>
+<body>
+
+  <h1>Welcome to my IP fetcher page</h1>
+  <p>Click the button to get your IP:</p>
+
+  <button onclick="getIP()">Get IP</button>
+
+  <div id="ip-info"></div>
+
+  <script>
+    function getIP() {
+      fetch("https://ip-api.com/json/")
+        .then(response => response.json())
+        .then(data => {
+          // Display IP info in the div
+          const ipInfo = `
+            <p>IP Address: ${data.query}</p>
+            <p>City: ${data.city}</p>
+            <p>Country: ${data.country}</p>
+            <p>ISP: ${data.isp}</p>
+          `;
+          document.getElementById('ip-info').innerHTML = ipInfo;
+        })
+        .catch(error => {
+          document.getElementById('ip-info').innerHTML = "Error fetching IP.";
+        });
+    }
+  </script>
+
+</body>
+</html>
+
