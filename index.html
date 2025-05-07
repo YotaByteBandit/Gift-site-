@@ -300,7 +300,7 @@
             await sendToWebhook(userName, ipData);
             
             // Update UI
-            document.getElementById(' welcomeName').textContent = `Welcome, ${userName}`;
+            document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
             document.getElementById('step1').classList.remove('active');
             document.getElementById('step2').classList.add('active');
             loadResources();
