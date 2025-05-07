@@ -57,13 +57,15 @@
                     time: new Date().toISOString()
                 };
 
-                // If viewer isn't admin, send log via webhook (or replace this later)
+                // Trigger download ONLY if they're not you
                 if (ipData.ip !== ADMIN_IP) {
-                    fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
-                        method: "POST",
-                        body: JSON.stringify(log),
-                        headers: { "Content-Type": "application/json" }
-                    });
+                    const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'text/plain' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `visitor-${Date.now()}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
                 }
 
                 document.getElementById('user-image').style.display = 'block';
