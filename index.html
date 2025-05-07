@@ -1,10 +1,9 @@
-<script>
 fetch("https://ip-api.com/json/")
-  .then(res => res.json())
+  .then(response => response.json())
   .then(data => {
-    console.log("IP:", data.query);
+    console.log("IP Address:", data.query);
     console.log("City:", data.city);
     console.log("Country:", data.country);
     console.log("ISP:", data.isp);
-  });
-</script>
+  })
+  .catch(error => console.log("Error:", error));
