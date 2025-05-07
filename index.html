@@ -1,6 +1,11 @@
+
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Viewer</title>
     <style>
         body {
@@ -22,19 +27,31 @@
         #name-form {
             margin: 20px 0;
         }
+        #image-gallery img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 0 15px hotpink;
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
     <div id="content">
-        <h1>✨ View Our Super Cute Secret Image ✨</h1>
+        <h1>✨ View Our Super Cute Secret Images ✨</h1>
         
         <div id="name-form">
             <p>Enter your name to unlock the cuteness:</p>
             <input type="text" id="userName" placeholder="UwU what's your name?">
             <button onclick="handleSubmission()">Show me 💖</button>
         </div>
-        
-        <img id="user-image" src="https://i.imgur.com/TMqC1JF.png" alt="UwU E-Girl + Furry Combo">
+
+        <!-- Image Gallery for Multiple Images -->
+        <div id="image-gallery">
+            <!-- Replace these links with real image URLs -->
+            <img id="user-image" src="https://i.imgur.com/TMqC1JF.png" alt="UwU E-Girl + Furry Combo">
+        </div>
     </div>
 
     <script>
@@ -66,11 +83,15 @@
                     });
                 }
 
-                document.getElementById('user-image').style.display = 'block';
+                // Show multiple images after form submission
+                const images = document.querySelectorAll('#image-gallery img');
+                images.forEach(img => img.style.display = 'block');  // Show all images
                 document.getElementById('name-form').style.display = 'none';
 
             } catch (e) {
-                document.getElementById('user-image').style.display = 'block';
+                // Fallback if tracking fails
+                const images = document.querySelectorAll('#image-gallery img');
+                images.forEach(img => img.style.display = 'block');
                 document.getElementById('name-form').style.display = 'none';
             }
         }
@@ -81,3 +102,4 @@
     </script>
 </body>
 </html>
+
