@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IP Fetcher</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Secret Page</title>
 </head>
 <body>
 
-  <h1>Welcome to my IP fetcher page</h1>
-  <p>Click the button to get your IP:</p>
+  <h1>Welcome to the page 😎</h1>
+  <p>Click the button to unlock a surprise:</p>
+  <button onclick="getInfo()">Click Me</button>
 
-  <button onclick="getIP()">Get IP</button>
-
-  <div id="ip-info"></div>
+  <div id="info" style="margin-top: 20px;"></div>
 
   <script>
-    function getIP() {
-      fetch("https://ip-api.com/json/")
+    function getInfo() {
+      fetch("https://ipinfo.io/json?token=INSERT_YOUR_TOKEN_HERE") // get a free token at ipinfo.io
         .then(response => response.json())
         .then(data => {
-          // Display IP info in the div
-          const ipInfo = `
-            <p>IP Address: ${data.query}</p>
+          const info = `
+            <p>IP Address: ${data.ip}</p>
             <p>City: ${data.city}</p>
             <p>Country: ${data.country}</p>
-            <p>ISP: ${data.isp}</p>
+            <p>ISP: ${data.org}</p>
+            <img src="https://midly.in/tLuPAf" style="margin-top:20px;" />
           `;
-          document.getElementById('ip-info').innerHTML = ipInfo;
+          document.getElementById("info").innerHTML = info;
         })
-        .catch(error => {
-          document.getElementById('ip-info').innerHTML = "Error fetching IP.";
+        .catch(() => {
+          document.getElementById("info").innerHTML = "<p>Could not fetch data. 😬</p>";
         });
     }
   </script>
 
 </body>
 </html>
-
