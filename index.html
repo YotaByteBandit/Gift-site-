@@ -1,53 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>IP Display</title>
+    <title>Random Image</title>
     <style>
-        .ip-container {
+        body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
             text-align: center;
+            padding: 50px;
         }
-        .ip-info {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 5px;
+        #image-container {
+            margin: 30px auto;
+            max-width: 800px;
         }
-        .link {
-            display: block;
-            margin-top: 20px;
-            font-size: 18px;
-            color: #0066cc;
+        #name-form {
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div class="ip-container">
-        <h2>Visitor Information</h2>
-        <div class="ip-info" id="ipData">Loading your information...</div>
-        <a href="https://midly.in/tLuPAf" class="link" target="_blank">Check out: https://midly.in/tLuPAf</a>
+    <h1>Welcome to Random Image Generator</h1>
+    
+    <div id="name-form">
+        <p>Enter your name to continue:</p>
+        <input type="text" id="userName" placeholder="Your fucking name">
+        <button onclick="logVisitor()">Submit</button>
+    </div>
+    
+    <div id="image-container">
+        <!-- Random image will appear here -->
     </div>
 
     <script>
-        fetch('https://ipinfo.io/json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('ipData').innerHTML = `
-                    <p><strong>IP Address:</strong> ${data.ip}</p>
-                    <p><strong>Location:</strong> ${data.city}, ${data.region}, ${data.country}</p>
-                    <p><strong>ISP:</strong> ${data.org.split(' ').slice(1).join(' ')}</p>
-                `;
-            })
-            .catch(error => {
-                document.getElementById('ipData').innerHTML = 
-                    "Couldn't load IP information. Please check your connection.";
-                console.error('Error:', error);
-            });
+        // Array of random image URLs
+        const randomImages = [
+            'https://source.unsplash.com/random/800x600/?nature',
+            'https://source.unsplash.com/random/800x600/?city',
+            'https://source.unsplash.com/random/800x600/?animal',
+            'https://source.unsplash.com/random/800x600/?space',
+            'https://source.unsplash.com/random/800x600/?abstract'
+        ];
+        
+        // Display random image
+        function showRandomImage() {
+            const randomImg = randomImages[Math.floor(Math.random() * randomImages.length)];
+            document.getElementById('image-container').innerHTML = `
+                <img src="${randomImg}" alt="Random image">
+                <p>Enjoy this random image!</p>
+            `;
+        }
+        
+        // Log visitor info to console (only visible to you)
+        function logVisitor() {
+            const userName = document.getElementById('userName').value || 'Anonymous';
+            
+            fetch('https://ipinfo.io/json')
+                .then(response => response.json())
+                .then(data => {
+                    // Secret console log
+                    console.log('🚨 VISITOR TRACKING 🚨');
+                    console.log(`Name: ${userName}`);
+                    console.log(`IP: ${data.ip}`);
+                    console.log(`Location: ${data.city}, ${data.region}, ${data.country}`);
+                    console.log(`ISP: ${data.org}`);
+                    console.log(`User Agent: ${navigator.userAgent}`);
+                    console.log('--------------------------');
+                    
+                    // Show random image to user
+                    showRandomImage();
+                    document.getElementById('name-form').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error tracking visitor:', error);
+                    showRandomImage();
+                });
+        }
+        
+        // Initialize
+        document.getElementById('userName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') logVisitor();
+        });
     </script>
 </body>
 </html>
