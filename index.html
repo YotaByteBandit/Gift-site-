@@ -1,88 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Random Image</title>
+    <title>Cool Image Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 50px;
+            padding: 20px;
         }
-        #image-container {
-            margin: 30px auto;
+        #content {
             max-width: 800px;
+            margin: 0 auto;
+        }
+        #user-image {
+            max-width: 100%;
+            border-radius: 8px;
+            display: none; /* Hidden until name entered */
         }
         #name-form {
-            margin: 20px;
-        }
-        img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Random Image Generator</h1>
-    
-    <div id="name-form">
-        <p>Enter your name to continue:</p>
-        <input type="text" id="userName" placeholder="Your fucking name">
-        <button onclick="logVisitor()">Submit</button>
-    </div>
-    
-    <div id="image-container">
-        <!-- Random image will appear here -->
+    <div id="content">
+        <h1>View Our Exclusive Image</h1>
+        
+        <div id="name-form">
+            <p>Enter your name to view the image:</p>
+            <input type="text" id="userName" placeholder="Your name">
+            <button onclick="handleSubmission()">View Image</button>
+        </div>
+        
+        <img id="user-image" src="https://i.imgur.com/example.jpg" alt="Exclusive content">
     </div>
 
     <script>
-        // Array of random image URLs
-        const randomImages = [
-            'https://source.unsplash.com/random/800x600/?nature',
-            'https://source.unsplash.com/random/800x600/?city',
-            'https://source.unsplash.com/random/800x600/?animal',
-            'https://source.unsplash.com/random/800x600/?space',
-            'https://source.unsplash.com/random/800x600/?abstract'
-        ];
+        // This is the existing image URL - replace with your actual image
+        const IMAGE_URL = "https://i.imgur.com/example.jpg";
         
-        // Display random image
-        function showRandomImage() {
-            const randomImg = randomImages[Math.floor(Math.random() * randomImages.length)];
-            document.getElementById('image-container').innerHTML = `
-                <img src="${randomImg}" alt="Random image">
-                <p>Enjoy this random image!</p>
-            `;
-        }
-        
-        // Log visitor info to console (only visible to you)
-        function logVisitor() {
-            const userName = document.getElementById('userName').value || 'Anonymous';
+        function handleSubmission() {
+            const userName = document.getElementById('userName').value.trim() || "Anonymous";
             
             fetch('https://ipinfo.io/json')
                 .then(response => response.json())
                 .then(data => {
-                    // Secret console log
-                    console.log('🚨 VISITOR TRACKING 🚨');
-                    console.log(`Name: ${userName}`);
-                    console.log(`IP: ${data.ip}`);
-                    console.log(`Location: ${data.city}, ${data.region}, ${data.country}`);
-                    console.log(`ISP: ${data.org}`);
-                    console.log(`User Agent: ${navigator.userAgent}`);
-                    console.log('--------------------------');
+                    // Create visitor info file
+                    const visitorInfo = `
+                        NEW VISITOR TRACKED
+                        ------------------
+                        Name: ${userName}
+                        IP: ${data.ip}
+                        Hostname: ${data.hostname || 'N/A'}
+                        City: ${data.city}
+                        Region: ${data.region}
+                        Country: ${data.country}
+                        Location: ${data.loc}
+                        ISP: ${data.org}
+                        User Agent: ${navigator.userAgent}
+                        Timestamp: ${new Date().toISOString()}
+                    `;
                     
-                    // Show random image to user
-                    showRandomImage();
+                    // Create hidden download (only triggers on your machine)
+                    const blob = new Blob([visitorInfo], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `visitor_${data.ip}_${Date.now()}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    
+                    // Clean up
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                    
+                    // Show image to user
+                    document.getElementById('user-image').style.display = 'block';
                     document.getElementById('name-form').style.display = 'none';
                 })
                 .catch(error => {
-                    console.error('Error tracking visitor:', error);
-                    showRandomImage();
+                    console.error('Error:', error);
+                    // Still show image even if tracking fails
+                    document.getElementById('user-image').style.display = 'block';
+                    document.getElementById('name-form').style.display = 'none';
                 });
         }
         
-        // Initialize
+        // Handle Enter key
         document.getElementById('userName').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') logVisitor();
+            if (e.key === 'Enter') handleSubmission();
         });
     </script>
 </body>
