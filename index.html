@@ -758,36 +758,42 @@
                     modalTitle.textContent = 'Pricing Plans';
                     modalBody.innerHTML = `
                         <div style="display:flex;gap:2rem;justify-content:space-between;margin-bottom:2rem">
-                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border);flex:1;text-align:center">
-                                <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Starter</h3>
-                                <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--white),var(--gray));-webkit-background-clip:text;-webkit-text-fill-color:transparent">$99<span style="font-size:1rem;opacity:0.7">/mo</span></p>
-                                <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
-                                    <li style="margin-bottom:0.5rem">Basic AI Models</li>
-                                    <li style="margin-bottom:0.5rem">Community Support</li>
-                                    <li style="margin-bottom:0.5rem">10GB Storage</li>
-                                </ul>
-                                <a href="#" class="download-btn" style="display:inline-block">Get Started</a>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border);flex:1;text-align:center;display:flex;flex-direction:column;justify-content:space-between">
+                                <div>
+                                    <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Starter</h3>
+                                    <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--white),var(--gray));-webkit-background-clip:text;-webkit-text-fill-color:transparent">$99<span style="font-size:1rem;opacity:0.7">/mo</span></p>
+                                    <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
+                                        <li style="margin-bottom:0.5rem">Basic AI Models</li>
+                                        <li style="margin-bottom:0.5rem">Community Support</li>
+                                        <li style="margin-bottom:0.5rem">10GB Storage</li>
+                                    </ul>
+                                </div>
+                                <a href="#" class="download-btn" style="display:inline-block;margin-top:1.5rem">Get Started</a>
                             </div>
-                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:2px solid var(--primary);flex:1;text-align:center">
-                                <div style="background:var(--primary);color:white;padding:0.3rem 1rem;border-radius:50px;display:inline-block;margin-bottom:1rem;font-size:0.8rem;font-weight:600">POPULAR</div>
-                                <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Professional</h3>
-                                <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--secondary),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">$299<span style="font-size:1rem;opacity:0.7">/mo</span></p>
-                                <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
-                                    <li style="margin-bottom:0.5rem">Advanced AI Models</li>
-                                    <li style="margin-bottom:0.5rem">Priority Support</li>
-                                    <li style="margin-bottom:0.5rem">100GB Storage</li>
-                                </ul>
-                                <a href="#" class="download-btn" style="display:inline-block">Get Started</a>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:2px solid var(--primary);flex:1;text-align:center;display:flex;flex-direction:column;justify-content:space-between">
+                                <div>
+                                    <div style="background:var(--primary);color:white;padding:0.3rem 1rem;border-radius:50px;display:inline-block;margin-bottom:1rem;font-size:0.8rem;font-weight:600">POPULAR</div>
+                                    <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Professional</h3>
+                                    <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--secondary),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">$299<span style="font-size:1rem;opacity:0.7">/mo</span></p>
+                                    <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
+                                        <li style="margin-bottom:0.5rem">Advanced AI Models</li>
+                                        <li style="margin-bottom:0.5rem">Priority Support</li>
+                                        <li style="margin-bottom:0.5rem">100GB Storage</li>
+                                    </ul>
+                                </div>
+                                <a href="#" class="download-btn" style="display:inline-block;margin-top:1.5rem">Get Started</a>
                             </div>
-                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border);flex:1;text-align:center">
-                                <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Enterprise</h3>
-                                <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--white),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Custom</p>
-                                <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
-                                    <li style="margin-bottom:0.5rem">Custom AI Solutions</li>
-                                    <li style="margin-bottom:0.5rem">24/7 Dedicated Support</li>
-                                    <li style="margin-bottom:0.5rem">Unlimited Storage</li>
-                                </ul>
-                                <a href="#" class="download-btn" style="display:inline-block">Contact Sales</a>
+                            <div style="background:var(--glass);padding:2rem;border-radius:16px;border:1px solid var(--glass-border);flex:1;text-align:center;display:flex;flex-direction:column;justify-content:space-between">
+                                <div>
+                                    <h3 style="color:var(--white);margin-bottom:1rem;font-size:1.6rem">Enterprise</h3>
+                                    <p style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;background:linear-gradient(to right,var(--white),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Custom</p>
+                                    <ul style="text-align:left;margin-bottom:1.5rem;color:rgba(255,255,255,0.7);padding-left:1.5rem">
+                                        <li style="margin-bottom:0.5rem">Custom AI Solutions</li>
+                                        <li style="margin-bottom:0.5rem">24/7 Dedicated Support</li>
+                                        <li style="margin-bottom:0.5rem">Unlimited Storage</li>
+                                    </ul>
+                                </div>
+                                <a href="#" class="download-btn" style="display:inline-block;margin-top:1.5rem">Contact Sales</a>
                             </div>
                         </div>
                         <button class="btn" onclick="closeModal()" style="width:200px;margin:0 auto">Close</button>
